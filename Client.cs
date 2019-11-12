@@ -19,7 +19,8 @@ namespace client
         MENU_VEHICLES,
         MENU_CHANGE_MODEL,
         MENU_PLAYER,
-        MENU_MODIFIERS
+        MENU_MODIFIERS,
+        MENU_WEAPONS
     };
 
     public class Client : BaseScript
@@ -39,7 +40,7 @@ namespace client
         {
             if (firstTick)
             {
-                await Delay(2500);
+                await Delay(500);
 
                 //await ChangeModel.SetModel("a_c_fox_01");
 
@@ -47,6 +48,9 @@ namespace client
 
                 firstTick = false;
             }
+
+            Function.Call((Hash)0x4759cc730f947c81); // ped pop enable  
+            Function.Call((Hash)0x1ff00db43026b12f); // veh?
 
             Keyboard.DisableControlActionWrap(2, Control.Map, true);
 
@@ -99,6 +103,10 @@ namespace client
 
                 case MenuId.MENU_MODIFIERS:
                     await Menus.Modifiers.Draw();
+                    break;
+
+                case MenuId.MENU_WEAPONS:
+                    await Menus.Weapons.Draw();
                     break;
 
                 default:

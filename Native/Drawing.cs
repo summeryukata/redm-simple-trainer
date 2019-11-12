@@ -295,7 +295,7 @@ namespace client
             Keyboard.DisableControlActionWrap(2, Control.MultiplayerInfo, true);
             Keyboard.DisableControlActionWrap(2, Control.Phone, true);
 
-            float width = 0.2f;
+            float width = 0.25f;
 
             // background box
             DrawRect(0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0, 0, 0, 200);

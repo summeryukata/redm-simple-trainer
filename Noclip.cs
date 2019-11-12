@@ -23,7 +23,9 @@ namespace client
             10.0f,
             25.0f,
             50.0f,
-            100.0f
+            100.0f,
+            200.0f,
+            300.0f
         };
 
         public static bool Enabled => ms_toggled;

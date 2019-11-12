@@ -42,6 +42,7 @@ namespace client.Menus
             AddMenuOption("Player", MenuId.MENU_PLAYER);
             AddMenuOption("Util", MenuId.MENU_MISC);
             AddMenuOption("Timecyc Mods", MenuId.MENU_MODIFIERS);
+            AddMenuOption("Weapons", MenuId.MENU_WEAPONS);
 
             AddInt("Time", ref g_currentTime, 0, 23, 1);
             AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
