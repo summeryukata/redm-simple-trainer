@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <DebugType>embedded</DebugType>
+    <TargetName>$(AssemblyName).net</TargetName>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Reference Include="CitizenFX.Core.Client">
+		<HintPath>..\..\..\..\citizen\clr2\lib\mono\4.5\citizenfx.core.dll</HintPath>
+	</Reference>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
