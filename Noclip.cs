@@ -1,5 +1,4 @@
-﻿using CitizenFX;
-using CitizenFX.Core;
+﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace client
 {
     public class Noclip
     {
-        static uint ms_toggleControl = Control.SelectItemWheel;
+        static Control ms_toggleControl = Control.SelectItemWheel;
         static bool ms_toggled = false;
         static bool ms_justToggled = false;
         static float ms_currentSpeed = 5.0f;

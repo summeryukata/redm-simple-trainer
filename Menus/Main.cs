@@ -9,6 +9,82 @@ namespace client.Menus
     internal class Main : Drawing
     {
         static int selectedVehicle = 0;
+
+        static int spawned = -1;
+
+        public static async Task PerformRequest(int hash)
+        {
+            while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
+            {
+                Function.Call(Hash.REQUEST_MODEL, hash);
+                await BaseScript.Delay(50);
+            }
+        }
+
+        private static async Task CreateVehicle(int hash, Vector3 pos, float head)
+        {
+            if (spawned != -1)
+            {
+                Function.Call(Hash.DELETE_VEHICLE, spawned);
+                spawned = -1;
+            }
+
+            await PerformRequest(hash);
+
+            spawned = Function.Call<int>(Hash.CREATE_VEHICLE, hash, pos.X, pos.Y, pos.Z, 0, 0, 0, head - 90, false, false, 0, 0);
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawned, true, true);
+        }
+
+        public static async Task Draw()
+        {
+            SetMenuTitle("hi!", "this is native menu");
+
+            AddMenuOption("Player", MenuId.MENU_PLAYER);
+            AddMenuOption("Util", MenuId.MENU_MISC);
+            AddMenuOption("Timecyc Mods", MenuId.MENU_MODIFIERS);
+
+            AddInt("Time", ref g_currentTime, 0, 23, 1);
+            AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
+
+            int v = AddArray("Vehicles", ref selectedVehicle, vehicles, vehicles.Count());
+
+            int w = 0;
+            if (spawned != -1)
+            {
+                w = AddMenuEntryMultiline("Warp in to vehicle", "Press enter to");
+            }
+            else
+            {
+                w = 0;
+            }
+
+            var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
+
+            if (IsEntryPressed(v))
+            {
+                var coors = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, pedId);
+                var forward = Function.Call<Vector3>(Hash.GET_ENTITY_FORWARD_VECTOR, pedId);
+                forward.Normalize();
+                var head = Function.Call<float>(Hash.GET_ENTITY_HEADING, pedId);
+                var veh = vehicles[selectedVehicle];
+                var hash = GenHash(veh);
+
+                Debug.WriteLine($"Spawning a {veh} ({hash}) at {(coors + (forward * 3)).ToString()}");
+
+                await CreateVehicle(hash, coors + (forward * 3), head);
+            }
+
+            if (IsEntryPressed(w))
+            {
+                Function.Call(Hash.SET_PED_INTO_VEHICLE, pedId, spawned, -1);
+            }
+
+            StyleMenu();
+
+            await Task.FromResult(0);
+        }
+
+        // auto-generated
         static string[] vehicles = new[]
         {
             "privateopensleeper02x",
@@ -120,78 +196,5 @@ namespace client.Menus
             "gatchuck",
             "gatchuck_2",
         };
-
-        static int spawned = -1;
-
-        public static async Task PerformRequest(int hash)
-        {
-            while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
-            {
-                Function.Call(Hash.REQUEST_MODEL, hash);
-                await BaseScript.Delay(50);
-            }
-        }
-
-        private static async Task CreateVehicle(int hash, Vector3 pos, float head)
-        {
-            if (spawned != -1)
-            {
-                Function.Call(Hash.DELETE_VEHICLE, spawned);
-                spawned = -1;
-            }
-
-            await PerformRequest(hash);
-
-            spawned = Function.Call<int>(Hash.CREATE_VEHICLE, hash, pos.X, pos.Y, pos.Z, 0, 0, 0, head - 90, false, false, 0, 0);
-            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawned, true, true);
-        }
-
-        public static async Task Draw()
-        {
-            SetMenuTitle("hi!", "this is native menu");
-
-            AddMenuOption("Player", MenuId.MENU_PLAYER);
-            AddMenuOption("Util", MenuId.MENU_MISC);
-
-            AddInt("Time", ref g_currentTime, 0, 23, 1);
-            AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
-
-            int v = AddArray("Vehicles", ref selectedVehicle, vehicles, vehicles.Count());
-
-            int w = 0;
-            if (spawned != -1)
-            {
-                w = AddMenuEntryMultiline("Warp in to vehicle", "Press enter to");
-            }
-            else
-            {
-                w = 0;
-            }
-
-            var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
-
-            if (IsEntryPressed(v))
-            {
-                var coors = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, pedId);
-                var forward = Function.Call<Vector3>(Hash.GET_ENTITY_FORWARD_VECTOR, pedId);
-                forward.Normalize();
-                var head = Function.Call<float>(Hash.GET_ENTITY_HEADING, pedId);
-                var veh = vehicles[selectedVehicle];
-                var hash = GenHash(veh);
-
-                Debug.WriteLine($"Spawning a {veh} ({hash}) at {(coors + (forward * 3)).ToString()}");
-
-                await CreateVehicle(hash, coors + (forward * 3), head);
-            }
-
-            if (IsEntryPressed(w))
-            {
-                Function.Call(Hash.SET_PED_INTO_VEHICLE, pedId, spawned, -1);
-            }
-
-            StyleMenu();
-
-            await Task.FromResult(0);
-        }
     }
 }

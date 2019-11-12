@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core.Native;
-using CitizenFX;
-using client.Menus;
 
 namespace client
 {
@@ -20,7 +18,8 @@ namespace client
         MENU_WEATHER,
         MENU_VEHICLES,
         MENU_CHANGE_MODEL,
-        MENU_PLAYER
+        MENU_PLAYER,
+        MENU_MODIFIERS
     };
 
     public class Client : BaseScript
@@ -42,7 +41,7 @@ namespace client
             {
                 await Delay(2500);
 
-                await ChangeModel.SetModel("a_c_fox_01");
+                //await ChangeModel.SetModel("a_c_fox_01");
 
                 Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), -1452.17f, -2329.4f, 42.9603f, 1, 0, 0, 1);
 
@@ -96,6 +95,10 @@ namespace client
 
                 case MenuId.MENU_PLAYER:
                     await Menus.Player.Draw();
+                    break;
+
+                case MenuId.MENU_MODIFIERS:
+                    await Menus.Modifiers.Draw();
                     break;
 
                 default:

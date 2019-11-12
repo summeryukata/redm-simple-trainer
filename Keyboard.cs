@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 using CitizenFX.Core.Native;
 using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
-using CitizenFX;
 
 namespace client
 {
     class Keyboard : Globals
     {
-        public static bool IsControlPressedWrap(int group, uint ctrl) => Function.Call<bool>(Hash.IS_CONTROL_PRESSED, group, ctrl);
-        public static bool IsDisabledControlPressedWrap(int group, uint ctrl) => Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, ctrl);
-        public static bool IsControlJustPressedWrap(int group, uint ctrl) => Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, ctrl);
-        public static bool IsDisabledControlJustPressedWrap(int group, uint ctrl) => Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, ctrl);
-        public static void DisableControlActionWrap(int group, uint control, bool val) => Function.Call(Hash.DISABLE_CONTROL_ACTION, group, control, val);
+        public static bool IsControlPressedWrap(int group, Control ctrl) => Function.Call<bool>(Hash.IS_CONTROL_PRESSED, group, (uint)ctrl);
+        public static bool IsDisabledControlPressedWrap(int group, Control ctrl) => Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, (uint)ctrl);
+        public static bool IsControlJustPressedWrap(int group, Control ctrl) => Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, (uint)ctrl);
+        public static bool IsDisabledControlJustPressedWrap(int group, Control ctrl) => Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, (uint)ctrl);
+        public static void DisableControlActionWrap(int group, Control control, bool val) => Function.Call(Hash.DISABLE_CONTROL_ACTION, group, (uint)control, val);
 
         private static bool trainerSwitchPressed()
         {
@@ -39,13 +38,13 @@ namespace client
             return false;
         }
 
-        private static Dictionary<uint, int> ms_controlStates = new Dictionary<uint, int>();
+        private static Dictionary<Control, int> ms_controlStates = new Dictionary<Control, int>();
 
         private static int GetTickCount() => Function.Call<int>(Hash.GET_GAME_TIMER);
 
-        internal static bool isControlPressedFor(uint ctrl, int msec)
+        internal static bool isControlPressedFor(Control ctrl, int msec)
         {
-            bool ctrlPressed(uint action) =>
+            bool ctrlPressed(Control action) =>
                 IsControlPressedWrap(0, action) || IsDisabledControlPressedWrap(0, action);
             
             // make a new entry if none exists
@@ -80,11 +79,11 @@ namespace client
             { 2400, 30 }
         };
 
-        private static void upDownHeld()
+        private static void NavKeyHeld()
         {
             delay = 150;
 
-            foreach (var control in new[] { Control.FrontendUp, Control.FrontendDown })
+            foreach (var control in new[] { Control.FrontendUp, Control.FrontendDown, Control.FrontendLeft, Control.FrontendRight })
             {
                 foreach (var controlDelay in controlDelays.Reverse())
                 {
@@ -111,7 +110,7 @@ namespace client
 
         internal static void MonitorKeys()
         {
-            upDownHeld();
+            NavKeyHeld();
 
             if (Function.Call<bool>(Hash.IS_PAUSE_MENU_ACTIVE))
                 return;

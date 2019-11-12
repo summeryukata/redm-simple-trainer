@@ -1,6 +1,5 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,40 @@ namespace client.Menus
 {
     internal class ChangeModel : Drawing
     {
+        public static async Task SetModel(string name)
+        {
+            int model = GenHash(name);
+            int player = Function.Call<int>(Hash.PLAYER_ID);
+
+            await Main.PerformRequest(model);
+
+            Debug.WriteLine($"Switching me ({player}) to {name} ({model})");
+
+            Function.Call(Hash.SET_PLAYER_MODEL, player, model, false);
+            Function.Call((Hash)0x283978A15512B2FE, Function.Call<int>(Hash.PLAYER_PED_ID), true);
+            Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, model);
+        }
+
+        public static async Task Draw()
+        {
+            SetMenuTitle("Change Model", "mmmmmmmmodel");
+
+            foreach (string p in peds)
+            {
+                int i = AddMenuEntry(p);
+
+                if (IsEntryPressed(i))
+                {
+                    await SetModel(p);
+                }
+            }
+
+            StyleMenu();
+
+            await Task.FromResult(0);
+        }
+
+        // auto-generated
         static string[] peds = new[]
         {
             "CS_BILLWILLIAMSON",
@@ -581,38 +614,5 @@ namespace client.Menus
         "A_C_FISHBULLHEADCAT_01_MS",
         "A_C_FISHLARGEMOUTHBASS_01_MS",
         };
-
-        public static async Task SetModel(string name)
-        {
-            int model = GenHash(name);
-            int player = Function.Call<int>(Hash.PLAYER_ID);
-
-            await Main.PerformRequest(model);
-
-            Debug.WriteLine($"Switching me ({player}) to {name} ({model})");
-
-            Function.Call(Hash.SET_PLAYER_MODEL, player, model, false);
-            Function.Call((Hash)0x283978A15512B2FE, Function.Call<int>(Hash.PLAYER_PED_ID), true);
-            Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, model);
-        }
-
-        public static async Task Draw()
-        {
-            SetMenuTitle("Change Model", "mmmmmmmmodel");
-
-            foreach (string p in peds)
-            {
-                int i = AddMenuEntry(p);
-
-                if (IsEntryPressed(i))
-                {
-                    await SetModel(p);
-                }
-            }
-
-            StyleMenu();
-
-            await Task.FromResult(0);
-        }
     }
 }

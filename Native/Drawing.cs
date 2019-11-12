@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using System.Drawing;
-using CitizenFX;
 
 namespace client
 {
@@ -299,7 +298,7 @@ namespace client
             float width = 0.2f;
 
             // background box
-            DrawRect(0f, 0.5f, 0.4f, 1.0f, 0, 0, 0, 200);
+            DrawRect(0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0, 0, 0, 200);
 
             float fromX = width / 2.0f;
 
