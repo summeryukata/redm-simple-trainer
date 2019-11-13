@@ -58,11 +58,11 @@ namespace client
             {
                 float controlY = 0.01f;
 
-                foreach (var fi in typeof(Control).GetFields())
+                foreach (Control ctrl in Enum.GetValues(typeof(Control)))
                 { 
-                    if (Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, (uint)fi.GetValue(null)))
+                    if (Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, (uint)ctrl))
                     {
-                        Drawing.DrawText(fi.Name, Globals.g_optionsFont, 0.8f, controlY, 0.25f, 0.25f, 255, 255, 255, 255, false);
+                        Drawing.DrawText(ctrl.ToString(), Globals.g_optionsFont, 0.8f, controlY, 0.25f, 0.25f, 255, 255, 255, 255, false);
                         controlY += 0.02f;
                     }
                 }
