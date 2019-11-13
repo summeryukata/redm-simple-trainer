@@ -11,11 +11,13 @@ namespace client
 {
     internal class Drawing : Globals
     { 
-        internal static void DrawText(string text, int font, float x, float y, float scaleX, float scaleY, int r, int g, int b, int a, bool center)
+        internal static void DrawText(string text, int font, float x, float y, float scaleX, float scaleY, int r, int g, int b, int a, bool center = false)
         {
             Function.Call(Hash.SET_TEXT_SCALE, scaleX, scaleY);
             Function.Call((Hash)0x50a41ad966910f03, r, g, b, a);
-            Function.Call((Hash)0xd79334a4bb99bad1, Function.Call<long>((Hash)0xFA925AC00EB830B9, 10, "LITERAL_STRING", text), x, y);
+            Function.Call(Hash.SET_TEXT_CENTRE, center);
+            // LITERAL_STRING, PLAYER_STRING
+            Function.Call(Hash._DRAW_TEXT, Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", text), x, y);
         }
 
         internal static void ChangeSubmenu(MenuId submenu)
@@ -27,7 +29,7 @@ namespace client
             g_menu_subMenuLevel++;
         }
 
-        internal static void DrawTexture(string textureStreamed, string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a)
+        internal static void DrawTexture(string textureStreamed, string textureName, float x, float y, float width, float height, float rotation, int r, int g, int b, int a, bool p11)
         {
             if (!Function.Call<bool>(Hash.HAS_STREAMED_TEXTURE_DICT_LOADED, textureStreamed))
             {
@@ -35,17 +37,17 @@ namespace client
             }
             else
             {
-                Function.Call(Hash.DRAW_SPRITE, textureStreamed, textureName, x, y, width, height, rotation, r, g, b, a);
+                Function.Call(Hash.DRAW_SPRITE, textureStreamed, textureName, x, y, width, height, rotation, r, g, b, a, p11);
             }
         }
 
         internal static void SetMenuTitle(string title, string subtitle)
         {
-            DrawText($"~bold~{title}", g_titleTextFont, 0.002f, 0.065f, 0.75f, 0.75f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
-            DrawText(subtitle, 1, 0.002f, 0.105f, 0.50f, 0.40f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, false);
+            DrawText(title, g_titleTextFont, 0.25f / 2, 0.065f, 0.75f, 0.75f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
+            DrawText(subtitle, 1, 0.25f / 2, 0.105f, 0.50f, 0.40f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
         }
 
-        private static int maxOptionCount = 18;
+        private static readonly int maxOptionCount = 18;
 
         internal static int AddMenuEntry(string option)
         {
@@ -53,11 +55,11 @@ namespace client
 
             if (g_menu_currentOption <= maxOptionCount && g_menu_optionCount <= maxOptionCount)
             {
-                DrawText(option, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.126f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha, g_titleCentered);
+                DrawText(option, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.126f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha);
             }
             else if ((g_menu_optionCount > (g_menu_currentOption - maxOptionCount)) && g_menu_optionCount <= g_menu_currentOption)
             {
-                DrawText(option, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.126f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha, g_titleCentered);
+                DrawText(option, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.126f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha);
             }
 
             return g_menu_optionCount;
@@ -69,21 +71,21 @@ namespace client
 
             if (g_menu_currentOption <= maxOptionCount && g_menu_optionCount <= maxOptionCount)
             {
-                DrawText(line1, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.132f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha, g_titleCentered);
-                DrawText(line2, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.12f), 0.1f, 0.25f, g_optionsRed, g_optionsGreen, g_optionsBlue, 200, g_titleCentered);
+                DrawText(line1, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.132f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha);
+                DrawText(line2, g_optionsFont, g_titleMenuText, (g_menu_optionCount * 0.035f + 0.12f), 0.1f, 0.25f, g_optionsRed, g_optionsGreen, g_optionsBlue, 200);
             }
             else if ((g_menu_optionCount > (g_menu_currentOption - maxOptionCount)) && g_menu_optionCount <= g_menu_currentOption)
             {
-                DrawText(line1, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.132f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha, g_titleCentered);
-                DrawText(line2, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.12f), 0.1f, 0.25f, g_optionsRed, g_optionsGreen, g_optionsBlue, 200, g_titleCentered);
+                DrawText(line1, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.132f), 0.1f, 0.4f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha);
+                DrawText(line2, g_optionsFont, g_titleMenuText, ((g_menu_optionCount - (g_menu_currentOption - maxOptionCount)) * 0.035f + 0.12f), 0.1f, 0.25f, g_optionsRed, g_optionsGreen, g_optionsBlue, 200);
             }
 
             return g_menu_optionCount;
         }
 
-        internal static int AddInt(string option, ref int value, int min, int max, int step = 1)
+        internal static int AddInt(string option, ref int value, int min, int max, int step = 1, string additionalValuePre = "", string additionalValuePost = "")
         {
-            int count = AddMenuEntry($"{option}: ~b~&lt; ~s~{value} ~b~&gt;");
+            int count = AddMenuEntry($"{option}: ~b~&lt; ~s~{additionalValuePre}{value}{additionalValuePost} ~b~&gt;");
 
             if (g_menu_currentOption == g_menu_optionCount)
             {
@@ -95,7 +97,7 @@ namespace client
                     }
                     else
                     {
-                        value = value + step;
+                        value += step;
                     }
 
                     right_press = false;
@@ -108,7 +110,7 @@ namespace client
                     }
                     else
                     {
-                        value = value - step;
+                        value -= step;
                     }
 
                     left_press = false;
@@ -134,7 +136,7 @@ namespace client
                     }
                     else
                     {
-                        thisChanges = thisChanges + step;
+                        thisChanges += step;
                     }
 
                     right_press = false;
@@ -147,7 +149,7 @@ namespace client
                     }
                     else
                     {
-                        thisChanges = thisChanges - step;
+                        thisChanges -= step;
                     }
 
                     left_press = false;
@@ -171,7 +173,7 @@ namespace client
                     }
                     else
                     {
-                        value = value + step;
+                        value += step;
                     }
 
                     right_press = false;
@@ -184,7 +186,7 @@ namespace client
                     }
                     else
                     {
-                        value = value - step;
+                        value -= step;
                     }
 
                     left_press = false;
@@ -208,7 +210,7 @@ namespace client
                     }
                     else
                     {
-                        value = value + 1;
+                        value += 1;
                     }
 
                     right_press = false;
@@ -221,7 +223,7 @@ namespace client
                     }
                     else
                     {
-                        value = value - 1;
+                        value -= 1;
                     }
 
                     left_press = false;
@@ -274,6 +276,11 @@ namespace client
             }
 
             return cur + step;
+        }
+
+        internal static float GetCurrentActiveY()
+        {
+            return (g_menu_currentOption * 0.035f) + 0.1415f;
         }
 
 
@@ -329,9 +336,9 @@ namespace client
             }
         }
 
-        internal static int AddBool(string option, ref bool value, bool msg = false)
+        internal static int AddBool(string option, ref bool value, bool msg = true)
         {
-            int count = 0;
+            int count;
 
             if (value)
             {
@@ -345,6 +352,8 @@ namespace client
             if (g_menu_currentOption == g_menu_optionCount && g_menu_optionPress)
             {
                 value = !value;
+
+                if (msg) Toast.AddToast($"{option} is now {value}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             return count;

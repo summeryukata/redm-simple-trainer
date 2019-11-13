@@ -62,7 +62,7 @@ namespace client.Menus
 
             AddFloat("Strength", ref strength, 0, 1, 0.1f);
 
-            int clear =AddMenuEntry("Clear modifiers");
+            int clear = AddMenuEntry("Clear modifiers");
 
             if (strength != 0.0f)
             {
@@ -76,6 +76,8 @@ namespace client.Menus
                 strength = 0.0f;
 
                 Function.Call(Hash.CLEAR_TIMECYCLE_MODIFIER);
+
+                Toast.AddToast("Cleared modifiers!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             StyleMenu();

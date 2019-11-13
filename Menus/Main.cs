@@ -46,12 +46,15 @@ namespace client.Menus
             AddMenuOption("Timecyc Mods", MenuId.MENU_MODIFIERS);
             AddMenuOption("Weapons", MenuId.MENU_WEAPONS);
 
-            AddInt("Time", ref g_currentTime, 0, 23, 1);
+            string zero = g_currentTimeMinutes < 10 ? "0" : "";
+
+            AddInt("Time", ref g_currentTimeMinutes, 0, 60, 1, additionalValuePre: $"{g_currentTimeHours}:{zero}");
             AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
 
             int v = AddArray("Vehicles", ref selectedVehicle, vehicles, vehicles.Count());
 
-            int w = 0;
+            int w;
+
             if (spawned != -1)
             {
                 w = AddMenuEntryMultiline("Warp in to vehicle", "Press enter to");
@@ -60,6 +63,8 @@ namespace client.Menus
             {
                 w = 0;
             }
+
+            StyleMenu();
 
             var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
 
@@ -90,17 +95,15 @@ namespace client.Menus
                 var veh = vehicles[selectedVehicle];
                 var hash = GenHash(veh);
 
-                Debug.WriteLine($"Spawning a {veh} ({hash}) at {(coors + (forward * 3)).ToString()}");
-
                 await CreateVehicle(hash, coors + (forward * 3), head);
+
+                Toast.AddToast($"Spawned a {veh}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             if (IsEntryPressed(w))
             {
                 Function.Call(Hash.SET_PED_INTO_VEHICLE, pedId, spawned, -1);
             }
-
-            StyleMenu();
 
             await Task.FromResult(0);
         }

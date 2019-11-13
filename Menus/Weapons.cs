@@ -33,16 +33,20 @@ namespace client.Menus
                 await Main.PerformRequest(GenHash(weaponModelNames[selectedWeapIdx]));
 
                 GiveWeapon(ped, weaponNames[selectedWeapIdx], 100, false, 1, false, 0.0f);
+
+                Toast.AddToast($"Gave a {weaponNames[selectedWeapIdx]}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             if (IsEntryPressed(ammo))
             {
                 GiveAmmoOfTypeToPed(ped, ammoTypes[selectedAmmoType], 100);
+                Toast.AddToast($"Gave ammo of type {ammoTypes[selectedAmmoType]}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             if (IsEntryPressed(remove))
             {
                 Function.Call(Hash.REMOVE_ALL_PED_WEAPONS, ped, 1, 1);
+                Toast.AddToast($"Removed all weapons!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             StyleMenu();

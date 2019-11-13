@@ -17,11 +17,11 @@ namespace client.Menus
 
             await Main.PerformRequest(model);
 
-            Debug.WriteLine($"Switching me ({player}) to {name} ({model})");
-
             Function.Call(Hash.SET_PLAYER_MODEL, player, model, false);
             Function.Call((Hash)0x283978A15512B2FE, Function.Call<int>(Hash.PLAYER_PED_ID), true);
             Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, model);
+            
+            Toast.AddToast($"Switching to {name}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
         }
 
         public static async Task Draw()

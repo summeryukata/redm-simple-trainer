@@ -14,7 +14,7 @@ namespace client
         static bool ms_toggled = false;
         static bool ms_justToggled = false;
         static float ms_currentSpeed = 5.0f;
-        static bool ms_shouldDrawHelp = true;
+        static bool ms_shouldDrawHelp = false;
 
         static int ms_speedIdx = 0;
         static float[] ms_speeds = new[]
@@ -96,6 +96,8 @@ namespace client
                         ToggleAlpha(ms_mount, true);
                         ToggleCol(ms_mount, false);
                     }
+
+                    Toast.AddToast($"Noclip active! Press H for help!", 3000, 0.18f, 0.05f);
 
                     ms_justToggled = false;
                 }

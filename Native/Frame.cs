@@ -13,13 +13,30 @@ namespace client
         private static async Task CurrentTime()
         {
             // set current time whenever a change is detected
-            if (g_currentTime != previousCurrentTime)
+            if (g_currentTimeMinutes != previousCurrentTime)
             {
-                Debug.WriteLine($"Setting time to {g_currentTime}");
+                if (g_currentTimeMinutes == 60)
+                {
+                    g_currentTimeMinutes = 0;
 
-                Function.Call(Hash.ADVANCE_CLOCK_TIME_TO, g_currentTime, 0, 0);
+                    g_currentTimeHours++;
 
-                previousCurrentTime = g_currentTime;
+                    if (g_currentTimeHours > 23)
+                    {
+                        g_currentTimeHours = 0;
+                    }
+                }
+
+                Function.Call(Hash.ADVANCE_CLOCK_TIME_TO, g_currentTimeHours, g_currentTimeMinutes, 0);
+
+                previousCurrentTime = g_currentTimeMinutes;
+            }
+            else
+            {
+                g_currentTimeHours = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+                g_currentTimeMinutes = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+
+                previousCurrentTime = g_currentTimeMinutes;
             }
 
             await Task.FromResult(0);
@@ -46,7 +63,7 @@ namespace client
             if (g_ingameCoords)
             {
                 Vector3 coords = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, Function.Call<int>(Hash.PLAYER_PED_ID), false);
-                Drawing.DrawText($"{coords.ToString()}", g_optionsFont, 0.4f, 0.98f, 0.30f, 0.30f, 255, 255, 255, 255, false);
+                Drawing.DrawText($"{coords.ToString()}", g_optionsFont, 0.4f, 0.98f, 0.30f, 0.30f, 255, 255, 255, 255);
             }
 
             await Task.FromResult(0);
@@ -62,7 +79,7 @@ namespace client
                 { 
                     if (Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, (uint)ctrl))
                     {
-                        Drawing.DrawText(ctrl.ToString(), Globals.g_optionsFont, 0.8f, controlY, 0.25f, 0.25f, 255, 255, 255, 255, false);
+                        Drawing.DrawText(ctrl.ToString(), Globals.g_optionsFont, 0.8f, controlY, 0.25f, 0.25f, 255, 255, 255, 255);
                         controlY += 0.02f;
                     }
                 }

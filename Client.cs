@@ -34,6 +34,7 @@ namespace client
             Instance = this;
             Tick += DoTick;
             Tick += Noclip.Tick;
+            Tick += Toast.Tick;
         }
 
         static bool firstTick = true;
@@ -46,7 +47,16 @@ namespace client
 
                 //await ChangeModel.SetModel("a_c_fox_01");
 
-                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), -1452.17f, -2329.4f, 42.9603f, 1, 0, 0, 1);
+                Vector3 spawnLocation = Storage.Get<Vector3>("SpawnLocation");
+
+                if (Vector3.Distance(spawnLocation, new Vector3(0f, 0f, 0f)) < 10.0f)
+                {
+                    spawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
+                    Storage.Set("SpawnLocation", spawnLocation);
+                }
+
+                Function.Call(Hash._SET_MINIMAP_REVEALED, true);
+                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), spawnLocation.X, spawnLocation.Y, spawnLocation.Z, 1, 0, 0, 1);
 
                 firstTick = false;
             }

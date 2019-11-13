@@ -46,16 +46,16 @@ namespace client
         public static int g_backgroundBlue = 0;
         public static int g_backgroundAlpha = 200;
 
-        public static int g_optionsFont = 9;
+        public static int g_optionsFont = 10;
         public static int g_optionsRed = 206;
         public static int g_optionsGreen = 202;
         public static int g_optionsBlue = 202;
         public static int g_optionsAlpha = 255;
 
-        public static int g_activeRed = 63;
-        public static int g_activeGreen = 63;
-        public static int g_activeBlue = 63;
-        public static int g_activeOpacity = 255;
+        public static int g_activeRed = 255;
+        public static int g_activeGreen = 255;
+        public static int g_activeBlue = 255;
+        public static int g_activeOpacity = 50;
 
         public static int g_highlightRed = 230;
         public static int g_highlightGreen = 22;
@@ -89,19 +89,20 @@ namespace client
         public static bool g_playerVehicleLocked = false;
         public static bool g_ingameCoords = false;
         public static bool g_driftAngle = false;
-        public static int g_currentTime = 12;
+        public static int g_currentTimeHours = 12;
+        public static int g_currentTimeMinutes = 0;
         public static bool g_persistWeather = false;
         public static int g_vehicleType;
         public static int g_colourType = 0;
 
-        public static int previousCurrentTime = 12;
+        public static int previousCurrentTime = 0;
         public static bool previousPersistWeather = false;
         public static bool previousVehicleLocked = false;
 
         public static int g_currentWeatherIdx = 0;
         public static int previousWeatherIdx = 0;
         public static string[] g_weathers = new[] { "OVERCAST", "RAIN", "FOG", "SNOWLIGHT", "THUNDER", "BLIZZARD", "SNOW", "MISTY", 
-                                                    "SUNNY", "HIGHPRESSURE", "CLEARING", "SLEET", "DRIZZLE", "SNOWCLEARING", "OVERCASTDARK", 
+                                                    "SUNNY", "HIGHPRESSURE", "SLEET", "DRIZZLE", "SNOWCLEARING", "OVERCASTDARK", 
                                                     "THUNDERSTORM", "SANDSTORM", "HURRICANE", "HAIL", "WHITEOUT", "GROUNDBLIZZARD"};
 
         public static bool g_debugControls = false;

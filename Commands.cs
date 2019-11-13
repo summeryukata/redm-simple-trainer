@@ -60,7 +60,7 @@ namespace client
                 lastTime = DateTime.Now;
             }
 
-            Drawing.DrawText($"FPS: {lastFps}", 1, 0.01f, 0.01f, 0.3f, 0.3f, 255, 255, 255, 255, false);
+            Drawing.DrawText($"FPS: {lastFps}", 1, 0.01f, 0.01f, 0.3f, 0.3f, 255, 255, 255, 255);
 
             await Task.FromResult(0);
         }

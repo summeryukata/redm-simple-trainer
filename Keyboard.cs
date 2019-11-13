@@ -42,7 +42,7 @@ namespace client
 
         private static int GetTickCount() => Function.Call<int>(Hash.GET_GAME_TIMER);
 
-        internal static bool isControlPressedFor(Control ctrl, int msec)
+        internal static bool IsControlPressedFor(Control ctrl, int msec)
         {
             bool ctrlPressed(Control action) =>
                 IsControlPressedWrap(0, action) || IsDisabledControlPressedWrap(0, action);
@@ -83,11 +83,17 @@ namespace client
         {
             delay = 150;
 
+            if ((left_press || right_press) && IsDisabledControlPressedWrap(2, Control.Sprint))
+            {
+                delay = 0;
+                return;
+            }
+
             foreach (var control in new[] { Control.FrontendUp, Control.FrontendDown, Control.FrontendLeft, Control.FrontendRight })
             {
                 foreach (var controlDelay in controlDelays.Reverse())
                 {
-                    if (isControlPressedFor(control, controlDelay.Key))
+                    if (IsControlPressedFor(control, controlDelay.Key))
                     {
                         delay = controlDelay.Value;
                         return;
@@ -96,7 +102,7 @@ namespace client
             }
         }
 
-        private static void getButtonState(out bool a, out bool b, out bool up, out bool down, out bool l, out bool r)
+        private static void GetButtonState(out bool a, out bool b, out bool up, out bool down, out bool l, out bool r)
         {
             a = b = up = down = l = r = false;
 
@@ -132,7 +138,7 @@ namespace client
                 else
                 {
                     bool a, b, up, down, l, r;
-                    getButtonState(out a, out b, out up, out down, out l, out r);
+                    GetButtonState(out a, out b, out up, out down, out l, out r);
 
                     if (IsDisabledControlPressedWrap(0, Control.FrontendCancel) && (g_menu_subMenu != 0))
                     {
@@ -169,13 +175,19 @@ namespace client
                     }
                     else if (l || IsDisabledControlPressedWrap(0, Control.CellphoneLeft))
                     {
-                        g_menu_delayCounter = GetTickCount();
+                        if (!IsDisabledControlPressedWrap(2, Control.Sprint))
+                        {
+                            g_menu_delayCounter = GetTickCount();
+                        }
 
                         left_press = true;
                     }
                     else if (r || IsDisabledControlPressedWrap(0, Control.CellphoneRight))
                     {
-                        g_menu_delayCounter = GetTickCount();
+                        if (!IsDisabledControlPressedWrap(2, Control.Sprint))
+                        {
+                            g_menu_delayCounter = GetTickCount();
+                        }
 
                         right_press = true;
                     }
