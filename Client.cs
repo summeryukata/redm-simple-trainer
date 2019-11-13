@@ -20,7 +20,9 @@ namespace client
         MENU_CHANGE_MODEL,
         MENU_PLAYER,
         MENU_MODIFIERS,
-        MENU_WEAPONS
+        MENU_WEAPONS,
+        MENU_PLAYERLIST,
+        MENU_PLAYERLIST_DETAILS
     };
 
     public class Client : BaseScript
@@ -107,6 +109,14 @@ namespace client
 
                 case MenuId.MENU_WEAPONS:
                     await Menus.Weapons.Draw();
+                    break;
+
+                case MenuId.MENU_PLAYERLIST:
+                    await Menus.PlayerList.Draw();
+                    break;
+
+                case MenuId.MENU_PLAYERLIST_DETAILS:
+                    await Menus.PlayerDetails.Draw();
                     break;
 
                 default:

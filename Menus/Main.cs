@@ -39,6 +39,8 @@ namespace client.Menus
         {
             SetMenuTitle("hi!", "this is native menu");
 
+            int list = AddMenuOption("Player Listing", MenuId.MENU_PLAYERLIST);
+
             AddMenuOption("Player", MenuId.MENU_PLAYER);
             AddMenuOption("Util", MenuId.MENU_MISC);
             AddMenuOption("Timecyc Mods", MenuId.MENU_MODIFIERS);
@@ -60,6 +62,24 @@ namespace client.Menus
             }
 
             var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
+
+            if (IsEntryPressed(list))
+            {
+                // sadly, not yet
+                //Menus.PlayerList.Players = (int[])API.GetActivePlayers();
+
+                List<int> players = new List<int>();
+
+                for (int i = 0; i < 256; i++)
+                {
+                    if (Function.Call<bool>(Hash.NETWORK_IS_PLAYER_CONNECTED, i))
+                    {
+                        players.Add(i);
+                    }
+                }
+
+                Menus.PlayerList.Players = players.ToArray();
+            }
 
             if (IsEntryPressed(v))
             {
