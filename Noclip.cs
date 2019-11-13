@@ -30,6 +30,9 @@ namespace client
 
         public static bool Enabled => ms_toggled;
 
+        static int ms_ped = -1;
+        static int ms_mount = -1;
+
         public static async Task Tick()
         {
             Keyboard.DisableControlActionWrap(2, ms_toggleControl, true);
@@ -40,11 +43,9 @@ namespace client
                 ms_justToggled = true;
             }
 
-            var ped = Function.Call<int>(Hash.PLAYER_PED_ID);
-
-            void ToggleFreeze(bool val) => Function.Call(Hash.FREEZE_ENTITY_POSITION, ped, val);
-            void ToggleAlpha(bool val) => Function.Call(Hash.SET_ENTITY_ALPHA, ped, val ? 0 : 255, false);
-            void ToggleCol(bool val) => Function.Call(Hash.SET_ENTITY_COLLISION, ped, val, val);
+            void ToggleFreeze(int p, bool val) => Function.Call(Hash.FREEZE_ENTITY_POSITION, p, val);
+            void ToggleAlpha(int p, bool val) => Function.Call(Hash.SET_ENTITY_ALPHA, p, val ? 0 : 255, false);
+            void ToggleCol(int p, bool val) => Function.Call(Hash.SET_ENTITY_COLLISION, p, val, val);
 
             void SwitchSpeed()
             {
@@ -77,13 +78,31 @@ namespace client
             {
                 if (ms_justToggled)
                 {
-                    ToggleFreeze(true);
-                    ToggleAlpha(true);
-                    ToggleCol(false);
+
+                    ms_ped = Function.Call<int>(Hash.PLAYER_PED_ID);
+
+                    if (Function.Call<bool>(Hash.IS_PED_ON_MOUNT, ms_ped))
+                    {
+                        ms_mount = Function.Call<int>(Hash.GET_MOUNT, ms_ped);
+                    }
+
+                    ToggleFreeze(ms_ped, true);
+                    ToggleAlpha(ms_ped, true);
+                    ToggleCol(ms_ped, false);
+
+                    if (ms_mount != -1)
+                    {
+                        ToggleFreeze(ms_mount, true);
+                        ToggleAlpha(ms_mount, true);
+                        ToggleCol(ms_mount, false);
+                    }
+
                     ms_justToggled = false;
                 }
 
-                Function.Call(Hash.CLEAR_PED_TASKS_IMMEDIATELY, ped);
+                /*Function.Call(Hash.CLEAR_PED_TASKS_IMMEDIATELY, ms_ped);
+
+                if (ms_mount != -1) Function.Call(Hash.CLEAR_PED_TASKS_IMMEDIATELY, ms_mount);*/
 
                 Keyboard.DisableControlActionWrap(2, Control.MoveUpOnly, true);
                 Keyboard.DisableControlActionWrap(2, Control.MoveDownOnly, true);
@@ -105,7 +124,8 @@ namespace client
                 Vector3 right = new Vector3(forward.Y, -forward.X, 0);
 
                 Vector3 camPos = Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_COORD);
-                Vector3 pedPos = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, ped);
+                Vector3 camRot = Function.Call<Vector3>(Hash._GET_GAMEPLAY_CAM_ROT, 0);
+                Vector3 pedPos = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, ms_mount != -1 ? ms_mount : ms_ped);
                 Vector3 offset = (pedPos - camPos);
 
                 Vector3 up = new Vector3(0, 0, 1);
@@ -144,7 +164,8 @@ namespace client
 
                 Vector3 pos = camPos + offset;
 
-                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, ped, pos.X, pos.Y, pos.Z, true, true, true);
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, ms_mount != -1 ? ms_mount : ms_ped, pos.X, pos.Y, pos.Z, true, true, true);
+                Function.Call(Hash.SET_ENTITY_ROTATION, ms_mount != -1 ? ms_mount : ms_ped, camRot.X, camRot.Y, camRot.Z, 0, true);
 
                 if (Keyboard.IsDisabledControlJustPressedWrap(2, Control.Sprint))
                 {
@@ -160,11 +181,19 @@ namespace client
             {
                 if (ms_justToggled)
                 {
-                    ToggleFreeze(false);
-                    ToggleAlpha(false);
-                    ToggleCol(true);
+                    ToggleFreeze(ms_ped, false);
+                    ToggleAlpha(ms_ped, false);
+                    ToggleCol(ms_ped, true);
+
+                    if (ms_mount != -1)
+                    {
+                        ToggleFreeze(ms_mount, false);
+                        ToggleAlpha(ms_mount, false);
+                        ToggleCol(ms_mount, true);
+                    }
 
                     ms_justToggled = false;
+                    ms_mount = -1;
                 }
             }
 
