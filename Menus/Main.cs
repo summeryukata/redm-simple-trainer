@@ -26,7 +26,7 @@ namespace client.Menus
             }
         }
 
-        private static async Task CreateTrain(int hash, Vector3 pos)
+        private static async Task<int> CreateTrain(int hash, Vector3 pos)
         {
             if (spawnedTrain != -1)
             {
@@ -44,9 +44,11 @@ namespace client.Menus
 
             API.SetTrainSpeed(spawnedTrain, 0);
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawnedTrain, true, true);
+
+            return spawnedTrain;
         }
 
-        private static async Task CreateVehicle(int hash, Vector3 pos, float head)
+        private static async Task<int> CreateVehicle(int hash, Vector3 pos, float head)
         {
             if (spawned != -1)
             {

@@ -59,6 +59,7 @@ namespace client
                 Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
                 Function.Call(Hash._SET_MINIMAP_REVEALED, true);
                 Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
+                Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
 
                 firstTick = false;
             }
