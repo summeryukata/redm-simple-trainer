@@ -21,7 +21,7 @@ namespace client.Menus
             }
         }
 
-        private static async Task CreateVehicle(int hash, Vector3 pos, float head)
+        public static async Task<int> CreateVehicle(int hash, Vector3 pos, float head)
         {
             if (spawned != -1)
             {
@@ -33,6 +33,8 @@ namespace client.Menus
 
             spawned = Function.Call<int>(Hash.CREATE_VEHICLE, hash, pos.X, pos.Y, pos.Z, 0, 0, 0, head - 90, true, false, 0, 0);
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawned, true, true);
+
+            return spawned;
         }
 
         public static async Task Draw()

@@ -492,10 +492,10 @@ namespace client.Menus
         "A_C_snakeferdelance_01",
         "A_C_ROSEATESPOONBILL_01",
         "A_C_TURKEY_01",
-        "A_C_WOODPECKER_02",
+        //"A_C_WOODPECKER_02",
         "A_C_PIG_01",
         "A_C_SNAKEWATER_01",
-        "A_C_SPARROW_01",
+        /*"A_C_SPARROW_01",
         "A_C_Egret_01",
         "A_C_PARROT_01",
         "A_C_PRAIRIECHICKEN_01",
@@ -508,7 +508,7 @@ namespace client.Menus
         "A_C_PIGEON",
         "A_C_ROBIN_01",
         "A_C_SONGBIRD_01",
-        "A_C_Woodpecker_01",
+        "A_C_Woodpecker_01",*/
         "A_C_IGUANA_01",
         "A_C_ROOSTER_01",
         "A_C_SNAKEFERDELANCE_01",
@@ -520,7 +520,7 @@ namespace client.Menus
         "A_C_FROGBULL_01",
         "A_C_SQUIRREL_01",
         "A_C_Toad_01",
-        "A_C_TURTLESNAPPING_01",
+        //"A_C_TURTLESNAPPING_01",
         "A_C_Bull_01",
         "A_C_Cow",
         "A_C_MUSKRAT_01",
@@ -597,7 +597,7 @@ namespace client.Menus
         "A_C_Wolf",
         "A_C_Wolf_Medium",
         "A_C_Wolf_Small",
-        "A_C_FishMuskie_01_lg",
+        /*"A_C_FishMuskie_01_lg",
         "A_C_FISHLAKESTURGEON_01_LG",
         "A_C_FISHLONGNOSEGAR_01_LG",
         "A_C_FISHCHANNELCATFISH_01_LG",
@@ -612,7 +612,7 @@ namespace client.Menus
         "A_C_FISHROCKBASS_01_MS",
         "A_C_FISHSMALLMOUTHBASS_01_MS",
         "A_C_FISHBULLHEADCAT_01_MS",
-        "A_C_FISHLARGEMOUTHBASS_01_MS",
+        "A_C_FISHLARGEMOUTHBASS_01_MS",*/
         };
     }
 }

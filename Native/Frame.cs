@@ -27,7 +27,8 @@ namespace client
                     }
                 }
 
-                Function.Call(Hash.ADVANCE_CLOCK_TIME_TO, g_currentTimeHours, g_currentTimeMinutes, 0);
+                
+                Function.Call((Hash)0x669E223E64B1903C, g_currentTimeHours, g_currentTimeMinutes, 0, 0, 0);
 
                 previousCurrentTime = g_currentTimeMinutes;
             }
@@ -97,6 +98,17 @@ namespace client
             }
         }
 
+        internal static async Task ResurrectIfDead()
+        {
+            int ped = API.PlayerPedId();
+            if (Function.Call<bool>(Hash.IS_ENTITY_DEAD, ped))
+            {
+                Toast.AddToast("You seem to have died. Resurrecting", 5000, 0.18f, 0.05f);
+                Function.Call(Hash.NETWORK_RESURRECT_LOCAL_PLAYER, Client.SpawnLocation.X, Client.SpawnLocation.Y, Client.SpawnLocation.Z, 0, 0, 0, 0);
+            }
+            await Task.FromResult(0);
+        }
+
         internal static async Task RunFunctions()
         {
             await CurrentTime();
@@ -104,6 +116,7 @@ namespace client
             await CurrentWeather();
             await DebugControls();
             await InfiniteStamina();
+            await ResurrectIfDead();
         }
     }
 }
