@@ -33,9 +33,12 @@ namespace client
             Tick += DoTick;
             Tick += Noclip.Tick;
             Tick += Toast.Tick;
+            Tick += GamerTag.Tick;
         }
 
         static bool firstTick = true;
+
+        public static Vector3 SpawnLocation;
 
         private static async Task DoTick()
         {
@@ -45,17 +48,17 @@ namespace client
 
                 //await ChangeModel.SetModel("a_c_fox_01");
 
-                Vector3 spawnLocation = Storage.Get<Vector3>("SpawnLocation");
+                SpawnLocation = Storage.Get<Vector3>("SpawnLocation");
 
-                if (Vector3.Distance(spawnLocation, new Vector3(0f, 0f, 0f)) < 10.0f)
+                if (Vector3.Distance(SpawnLocation, new Vector3(0f, 0f, 0f)) < 10.0f)
                 {
-                    spawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
-                    Storage.Set("SpawnLocation", spawnLocation);
+                    SpawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
+                    Storage.Set("SpawnLocation", SpawnLocation);
                 }
 
-                Function.Call(Hash._SET_MINIMAP_REVEALED, true);
-                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), spawnLocation.X, spawnLocation.Y, spawnLocation.Z, 1, 0, 0, 1);
                 Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
+                Function.Call(Hash._SET_MINIMAP_REVEALED, true);
+                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
 
                 firstTick = false;
             }
@@ -63,34 +66,43 @@ namespace client
             Function.Call((Hash)0x4759cc730f947c81); // ped pop enable  
             Function.Call((Hash)0x1ff00db43026b12f); // veh?
 
-            Keyboard.DisableControlActionWrap(2, Control.Map, true);
+            bool pauseActive = Function.Call<bool>(Hash.IS_PAUSE_MENU_ACTIVE);
 
-            if (Globals.g_menu_subMenu != MenuId.MENU_NOTOPEN)
+            if (!pauseActive)
             {
-                Keyboard.DisableControlActionWrap(2, Control.VehNextRadioTrack, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehPrevRadioTrack, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehNextRadio, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehPrevRadio, true);
-                Keyboard.DisableControlActionWrap(2, Control.RadioWheelUd, true);
-                Keyboard.DisableControlActionWrap(2, Control.RadioWheelLr, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehHeadlight, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendAccept, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendCancel, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendUp, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendDown, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendRight, true);
-                Keyboard.DisableControlActionWrap(2, Control.FrontendLeft, true);
-                Keyboard.DisableControlActionWrap(2, Control.ScriptPadLeft, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehSelectNextWeapon, true);
-                Keyboard.DisableControlActionWrap(2, Control.VehSelectPrevWeapon, true);
-                Keyboard.DisableControlActionWrap(2, Control.SelectWeaponSpecial, true);
-                Keyboard.DisableControlActionWrap(2, Control.SelectWeaponUnarmed, true);
+                Keyboard.DisableControlActionWrap(2, Control.Map, true);
+
+                if (Globals.g_menu_subMenu != MenuId.MENU_NOTOPEN)
+                {
+                    Keyboard.DisableControlActionWrap(2, Control.VehNextRadioTrack, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehPrevRadioTrack, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehNextRadio, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehPrevRadio, true);
+                    Keyboard.DisableControlActionWrap(2, Control.RadioWheelUd, true);
+                    Keyboard.DisableControlActionWrap(2, Control.RadioWheelLr, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehHeadlight, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendAccept, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendCancel, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendUp, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendDown, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendRight, true);
+                    Keyboard.DisableControlActionWrap(2, Control.FrontendLeft, true);
+                    Keyboard.DisableControlActionWrap(2, Control.ScriptPadLeft, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehSelectNextWeapon, true);
+                    Keyboard.DisableControlActionWrap(2, Control.VehSelectPrevWeapon, true);
+                    Keyboard.DisableControlActionWrap(2, Control.SelectWeaponSpecial, true);
+                    Keyboard.DisableControlActionWrap(2, Control.SelectWeaponUnarmed, true);
+                }
+
+                if (!Noclip.Enabled)
+                {
+                    Keyboard.MonitorKeys();
+                }
             }
-
-            if (!Noclip.Enabled)
+            else
             {
-                Keyboard.MonitorKeys();
-            }            
+                Noclip.Enabled = false;
+            }
 
             Globals.g_menu_optionCount = 0;
 

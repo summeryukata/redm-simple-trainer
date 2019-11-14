@@ -11,7 +11,6 @@ namespace client
     public class Noclip
     {
         static Control ms_toggleControl = Control.SelectItemWheel;
-        static bool ms_toggled = false;
         static bool ms_justToggled = false;
         static float ms_currentSpeed = 5.0f;
         static bool ms_shouldDrawHelp = false;
@@ -28,7 +27,7 @@ namespace client
             300.0f
         };
 
-        public static bool Enabled => ms_toggled;
+        public static bool Enabled = false;
 
         static int ms_ped = -1;
         static int ms_mount = -1;
@@ -39,7 +38,7 @@ namespace client
 
             if (Keyboard.IsDisabledControlJustPressedWrap(2, ms_toggleControl))
             {
-                ms_toggled = !ms_toggled;
+                Enabled = !Enabled;
                 ms_justToggled = true;
             }
 
@@ -74,7 +73,7 @@ namespace client
                 Drawing.StyleMenu();
             }
 
-            if (ms_toggled)
+            if (Enabled)
             {
                 if (ms_justToggled)
                 {
