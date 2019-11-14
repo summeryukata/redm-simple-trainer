@@ -1,5 +1,6 @@
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ namespace client.Menus
 
         static int spawned = -1;
 
+        static int selectedTrain = 0;
+
+        static int spawnedTrain = -1;
+
         public static async Task PerformRequest(int hash)
         {
             while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
@@ -19,6 +24,26 @@ namespace client.Menus
                 Function.Call(Hash.REQUEST_MODEL, hash);
                 await BaseScript.Delay(50);
             }
+        }
+
+        private static async Task CreateTrain(int hash, Vector3 pos)
+        {
+            if (spawnedTrain != -1)
+            {
+                //Delete the train here.
+                spawnedTrain = -1;
+            }
+
+            int numberOfTrainWagons = Function.Call<int>((Hash)0x635423d55ca84fc8, hash);
+            for (int i = 0; i < numberOfTrainWagons; i++)
+            {
+                int wagonModelHash = Function.Call<int>((Hash)0x8df5f6a19f99f0d5, hash, i);
+                await PerformRequest(wagonModelHash);
+            }
+            spawnedTrain = Function.Call<int>((Hash)0xc239dbd9a57d2a71, hash, pos, 0, 0, 1, 1);
+
+            API.SetTrainSpeed(spawnedTrain, 0);
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawnedTrain, true, true);
         }
 
         private static async Task CreateVehicle(int hash, Vector3 pos, float head)
@@ -45,6 +70,7 @@ namespace client.Menus
             AddMenuOption("Util", MenuId.MENU_MISC);
             AddMenuOption("Timecyc Mods", MenuId.MENU_MODIFIERS);
             AddMenuOption("Weapons", MenuId.MENU_WEAPONS);
+            AddMenuOption("Spawn Ped", MenuId.MENU_SPAWN_PED);
 
             string zero = g_currentTimeMinutes < 10 ? "0" : "";
 
@@ -52,6 +78,8 @@ namespace client.Menus
             AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
 
             int v = AddArray("Vehicles", ref selectedVehicle, vehicles, vehicles.Count());
+
+            int t = AddIntArray("Trains", ref selectedTrain, trains, trains.Count());
 
             int w;
 
@@ -105,9 +133,39 @@ namespace client.Menus
                 Function.Call(Hash.SET_PED_INTO_VEHICLE, pedId, spawned, -1);
             }
 
+            if (IsEntryPressed(t))
+            {
+                var coors = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, pedId);
+                var veh = trains[selectedTrain];
+                await CreateTrain(veh, coors);
+                Toast.AddToast($"Spawned a train!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+            }
+
             await Task.FromResult(0);
         }
 
+        static int[] trains = new[]
+        {
+            -1464742217,
+            -577630801,
+            -1901305252,
+            -1719006020,
+            519580241,
+            1495948496,
+            1365127661,
+            -1083616881,
+            1030903581,
+            -2006657222,
+            1285344034,
+            -156591884,
+            987516329,
+            -1740474560,
+            -651487570,
+            -593637311,
+            1094934838,
+            1054492269,
+            1216031719,
+        };
         // auto-generated
         static string[] vehicles = new[]
         {

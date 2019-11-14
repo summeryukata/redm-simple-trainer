@@ -4,13 +4,18 @@
     <TargetFramework>net452</TargetFramework>
     <DebugType>embedded</DebugType>
     <TargetName>$(AssemblyName).net</TargetName>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-	<Reference Include="CitizenFX.Core.Client">
-		<HintPath>..\..\..\..\citizen\clr2\lib\mono\4.5\citizenfx.core.dll</HintPath>
-	</Reference>
+    <Reference Include="CitizenFX.Core">
+      <HintPath>E:\RedM2\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y /d &quot;$(TargetPath)&quot; &quot;E:\RedM2\usermaps\resources\weather\&quot;&#xD;&#xA;xcopy /y /d &quot;$(TargetPath)&quot; &quot;E:\RedM-Server\resources\test\&quot;" />
+  </Target>
 
 </Project>

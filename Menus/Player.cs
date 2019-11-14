@@ -12,6 +12,7 @@ namespace client.Menus
     {
         static bool disableRagdoll = false;
         static bool isInvincible = false;
+        static bool isHeal = false;
 
         public static async Task Draw()
         {

@@ -83,6 +83,43 @@ namespace client
             return g_menu_optionCount;
         }
 
+        internal static int AddIntArray(string option, ref int value, int[] hashes, int size)
+        {
+            int count = AddMenuEntry($"{option}: ~b~&lt; ~s~{hashes[value]} ~b~&gt;");
+
+            if (g_menu_currentOption == g_menu_optionCount)
+            {
+                if (right_press)
+                {
+                    if (value >= (size - 1))
+                    {
+                        value = 0;
+                    }
+                    else
+                    {
+                        value += 1;
+                    }
+
+                    right_press = false;
+                }
+                else if (left_press)
+                {
+                    if (value <= 0)
+                    {
+                        value = size - 1;
+                    }
+                    else
+                    {
+                        value -= 1;
+                    }
+
+                    left_press = false;
+                }
+            }
+
+            return count;
+        }
+
         internal static int AddInt(string option, ref int value, int min, int max, int step = 1, string additionalValuePre = "", string additionalValuePost = "")
         {
             int count = AddMenuEntry($"{option}: ~b~&lt; ~s~{additionalValuePre}{value}{additionalValuePost} ~b~&gt;");

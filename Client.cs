@@ -22,7 +22,8 @@ namespace client
         MENU_MODIFIERS,
         MENU_WEAPONS,
         MENU_PLAYERLIST,
-        MENU_PLAYERLIST_DETAILS
+        MENU_PLAYERLIST_DETAILS,
+        MENU_SPAWN_PED,
     };
 
     public class Client : BaseScript
@@ -54,6 +55,7 @@ namespace client
 
                 Function.Call(Hash._SET_MINIMAP_REVEALED, true);
                 Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), spawnLocation.X, spawnLocation.Y, spawnLocation.Z, 1, 0, 0, 1);
+                Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
 
                 firstTick = false;
             }
@@ -124,6 +126,10 @@ namespace client
 
                 case MenuId.MENU_PLAYERLIST_DETAILS:
                     await Menus.PlayerDetails.Draw();
+                    break;
+
+                case MenuId.MENU_SPAWN_PED:
+                    await Menus.SpawnPed.Draw();
                     break;
 
                 default:
