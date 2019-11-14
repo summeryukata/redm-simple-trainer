@@ -17,9 +17,10 @@ namespace client.Menus
         {
             SetMenuTitle("Player", "play with yourself!");
 
-            AddMenuOption("Change Model", MenuId.MENU_CHANGE_MODEL);
-            var r = AddBool("Disable Ragdoll?", ref disableRagdoll);
+            AddMenuOption("Change model", MenuId.MENU_CHANGE_MODEL);
+            var r = AddBool("Disable ragdoll?", ref disableRagdoll);
             var i = AddBool("Invincible?", ref isInvincible);
+            var s = AddBool("Infinite stamina?", ref g_infiniteStamina);
 
             var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
 

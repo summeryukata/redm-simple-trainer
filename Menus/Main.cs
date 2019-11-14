@@ -31,7 +31,7 @@ namespace client.Menus
 
             await PerformRequest(hash);
 
-            spawned = Function.Call<int>(Hash.CREATE_VEHICLE, hash, pos.X, pos.Y, pos.Z, 0, 0, 0, head - 90, false, false, 0, 0);
+            spawned = Function.Call<int>(Hash.CREATE_VEHICLE, hash, pos.X, pos.Y, pos.Z, 0, 0, 0, head - 90, true, false, 0, 0);
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, spawned, true, true);
         }
 

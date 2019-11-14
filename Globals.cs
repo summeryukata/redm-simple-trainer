@@ -106,5 +106,6 @@ namespace client
                                                     "THUNDERSTORM", "SANDSTORM", "HURRICANE", "HAIL", "WHITEOUT", "GROUNDBLIZZARD"};
 
         public static bool g_debugControls = false;
+        public static bool g_infiniteStamina = false;
     }
 }

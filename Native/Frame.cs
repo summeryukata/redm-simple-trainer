@@ -88,12 +88,22 @@ namespace client
             }
         }
 
+        internal static async Task InfiniteStamina()
+        {
+            if (g_infiniteStamina)
+            {
+                Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerPedId(), 100.0f);
+                await Task.FromResult(0);
+            }
+        }
+
         internal static async Task RunFunctions()
         {
             await CurrentTime();
             await IngameCoords();
             await CurrentWeather();
             await DebugControls();
+            await InfiniteStamina();
         }
     }
 }

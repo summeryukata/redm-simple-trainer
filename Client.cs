@@ -27,11 +27,8 @@ namespace client
 
     public class Client : BaseScript
     {
-        public static Client Instance;
-
         public Client()
         {
-            Instance = this;
             Tick += DoTick;
             Tick += Noclip.Tick;
             Tick += Toast.Tick;
