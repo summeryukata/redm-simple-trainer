@@ -109,6 +109,55 @@ namespace client
             await Task.FromResult(0);
         }
 
+        internal static async Task BalloonHandling()
+        {
+            if (Menus.Misc.balloonEntity != -1 && Function.Call<bool>(Hash.DOES_ENTITY_EXIST, Menus.Misc.balloonEntity) && Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, API.PlayerPedId(), false))
+            {
+                float y = Function.Call<float>(Hash.GET_CONTROL_NORMAL, 2, Control.VehMoveUpOnly);
+                float left = Function.Call<float>(Hash.GET_CONTROL_NORMAL, 2, Control.VehMoveLeftOnly);
+                float right = Function.Call<float>(Hash.GET_CONTROL_NORMAL, 2, Control.VehMoveRightOnly);
+
+                if (y > 0.01f)
+                {
+                    Function.Call(Hash.SET_VEHICLE_FORWARD_SPEED, Menus.Misc.balloonEntity, y * 10);
+                }
+
+                float heading = Function.Call<float>(Hash.GET_ENTITY_HEADING, Menus.Misc.balloonEntity);
+                bool set = false;
+
+                if (left > 0.01f)
+                {
+                    heading += left;
+
+                    if (heading >= 360.0f)
+                    {
+                        heading = 0f;
+                    }
+
+                    set = true;
+                }
+
+                if (right > 0.01f)
+                {
+                    heading -= right;
+
+                    if (heading <= 0.0f)
+                    {
+                        heading = 359.99f;
+                    }
+
+                    set = true;
+                }
+
+                if (set)
+                {
+                    Function.Call(Hash.SET_ENTITY_HEADING, Menus.Misc.balloonEntity, heading);
+                }
+            }
+
+            await Task.FromResult(0);
+        }
+
         internal static async Task RunFunctions()
         {
             await CurrentTime();
@@ -117,6 +166,7 @@ namespace client
             await DebugControls();
             await InfiniteStamina();
             await ResurrectIfDead();
+            await BalloonHandling();
         }
     }
 }
