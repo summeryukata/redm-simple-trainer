@@ -14,10 +14,20 @@ namespace client.Menus
 
         public static async Task PerformRequest(int hash)
         {
-            while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
+            if (Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, hash) && Function.Call<bool>(Hash.IS_MODEL_VALID, hash))
             {
+                Debug.WriteLine($"Requesting model {hash}");
+
                 Function.Call(Hash.REQUEST_MODEL, hash);
-                await BaseScript.Delay(50);
+
+                while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
+                {
+                    await BaseScript.Delay(50);
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Requested model not valid");
             }
         }
 
