@@ -302,24 +302,30 @@ namespace client
             Keyboard.DisableControlActionWrap(2, Control.MultiplayerInfo, true);
             Keyboard.DisableControlActionWrap(2, Control.Phone, true);
 
-            float width = 0.25f;
+            float width = 0.20f;
 
             // background box
-            DrawRect(0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0, 0, 0, 200);
+            //DrawRect(0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0, 0, 0, 200);
+            DrawTexture("menu_textures", "translate_bg_1a", 0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0.0f, 0, 0, 0, 200, true);
 
-            float fromX = width / 2.0f;
+            string selectedTxd = "boot_flow";
+            string selectedTex = "SELECTION_BOX_BG_1D";
+
+            float fromX = width / 2.0f + 0.025f;
 
             if (g_menu_optionCount > maxOptionCount)
             {
                 if (g_menu_currentOption > maxOptionCount)
                 {
-                    DrawRect(fromX, ((maxOptionCount * 0.035f) + 0.1415f), width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                    //DrawRect(fromX, ((maxOptionCount * 0.035f) + 0.1415f), width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                    DrawTexture(selectedTxd, selectedTex, fromX, ((maxOptionCount * 0.035f) + 0.1415f), width, 0.035f, 0.0f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity, true);
 
                     DrawRect(fromX, 0.156f, width, 0.005f, g_indicatorRed, g_indicatorGreen, g_indicatorBlue, g_indicatorAlpha);
                 }
                 else
                 {
-                    DrawRect(fromX, ((g_menu_currentOption * 0.035f) + 0.1415f), width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                    //DrawRect(fromX, ((g_menu_currentOption * 0.035f) + 0.1415f), width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                    DrawTexture(selectedTxd, selectedTex, fromX, ((g_menu_currentOption * 0.035f) + 0.1415f), width, 0.035f, 0.0f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity, true);
 
                     DrawRect(fromX, 0.156f, width, 0.005f, g_indicatorRed, g_indicatorGreen, g_indicatorBlue, g_indicatorAlpha);
                 }
@@ -332,7 +338,8 @@ namespace client
             {
                 activeY = DiffTrack(((g_menu_currentOption * 0.035f) + 0.1415f), activeY, 15.0f, Function.Call<float>(Hash.GET_FRAME_TIME, new InputArgument[0]));
 
-                DrawRect(fromX, activeY, width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                //DrawRect(fromX, activeY, width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
+                DrawTexture(selectedTxd, selectedTex, fromX, activeY, width, 0.035f, 0.0f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity, true);
             }
         }
 
