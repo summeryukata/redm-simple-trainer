@@ -10,11 +10,6 @@ namespace client
 {
     public class GamerTag
     {
-        public static int CreateGamerTag(int playerPed, string playerName)
-        {
-            return Function.Call<int>(Hash.CREATE_FAKE_MP_GAMER_TAG, playerPed, playerName, false, false, "CFX", 0);
-        }
-
         enum State
         {
             Disconnected,
@@ -22,82 +17,99 @@ namespace client
             HasGamerTag
         }
 
-        static Dictionary<int, State> players = new Dictionary<int, State>();
-        static Dictionary<int, int> gamerTags = new Dictionary<int, int>();
-        static Dictionary<int, int> blips = new Dictionary<int, int>();
-
-        static void UpdatePlayers()
+        class PlayerInfo
         {
-            for (int i = 0; i < 255; i++)
-            {
-                if (Function.Call<bool>(Hash.NETWORK_IS_PLAYER_CONNECTED, i))
-                {
-                    if (!players.ContainsKey(i) || players[i] == State.Disconnected)
-                    {
-                        players[i] = State.Connected;
-                    }
-                }
-                else
-                {
-                    if (players.ContainsKey(i))
-                    {
-                        players[i] = State.Disconnected;
-                    }
-                }
-            }
+            public State State { get; set; } = State.Disconnected;
+            public int PedId { get; set; } = -1;
+            public int BlipId { get; set; } = -1;
+            public int GamerTagId { get; set; } = -1;
         }
 
-        static int lastUpdate = 0;
+        static Dictionary<int, PlayerInfo> players = new Dictionary<int, PlayerInfo>();
 
         public static async Task Tick()
         {
-            int time = API.GetGameTimer();
-            if (time - lastUpdate > 100)
+            int CreateBlipForPlayer(int playerId, int pedId)
             {
-                UpdatePlayers();
-                lastUpdate = time;
+                int blip = Function.Call<int>((Hash)0x23f74c2fda6e7c61, 422991367, pedId);
+
+                Function.Call(Hash.SET_BLIP_NAME_TO_PLAYER_NAME, playerId);
+                Function.Call(Hash.SET_BLIP_SCALE, blip, 0.90f);
+
+                return blip;
             }
 
-            foreach (var p in players)
+            int CreateGamerTagForPlayer(int playerPed, string playerName)
             {
-                if (p.Value == State.Connected)
+                return Function.Call<int>(Hash.CREATE_FAKE_MP_GAMER_TAG, playerPed, playerName, true, true, "CFX", 3);
+            }
+
+            for (int i = 0; i < 32; i++)
+            {
+                int ped = API.GetPlayerPed(i);
+                string name = Function.Call<string>(Hash.GET_PLAYER_NAME, i);
+
+                if (Function.Call<bool>(Hash.NETWORK_IS_PLAYER_CONNECTED, i))
                 {
-                    string name = Function.Call<string>(Hash.GET_PLAYER_NAME, p.Key);
+                    if (!players.ContainsKey(i) || players[i].State == State.Disconnected)
+                    {
+                        players[i] = new PlayerInfo
+                        {
+                            State = State.Connected
+                        };
+                    }
+                    else if (players[i].State == State.Connected)
+                    {
+                        if (Function.Call<bool>(Hash.DOES_ENTITY_EXIST, ped))
+                        {
+                            players[i].PedId = ped;
+                            players[i].State = State.HasGamerTag;
 
-                    int gt = CreateGamerTag(API.GetPlayerPed(p.Key), name);
+                            if (ped != API.PlayerPedId())
+                            {
+                                if (!Function.Call<bool>(Hash.DOES_BLIP_EXIST, players[i].BlipId))
+                                {
+                                    players[i].BlipId = CreateBlipForPlayer(i, ped);
+                                }
 
-                    gamerTags[p.Key] = gt;
+                                if (!Function.Call<bool>(Hash.IS_MP_GAMER_TAG_ACTIVE, players[i].GamerTagId))
+                                {
+                                    players[i].GamerTagId = CreateGamerTagForPlayer(ped, name);
+                                }
 
-                    int blip = Function.Call<int>((Hash)0x23f74c2fda6e7c61, 422991367, API.GetPlayerPed(p.Key));
+                                Debug.WriteLine($"Created gamer tag and blip for {name}");
+                            }
+                            else
+                            {
+                                Debug.WriteLine("Skipped creating gamer tag for local player");
+                            }
+                        }
+                    }
+                    else if (players[i].State == State.HasGamerTag)
+                    {
+                        if (ped != API.PlayerPedId())
+                        {
+                            if (ped != players[i].PedId)
+                            {
+                                Function.Call(Hash.REMOVE_MP_GAMER_TAG, players[i].GamerTagId);
+                                Function.Call(Hash.REMOVE_BLIP, players[i].BlipId);
 
-                    Function.Call(Hash.SET_BLIP_NAME_TO_PLAYER_NAME, p.Key);
-                    Function.Call(Hash.SET_BLIP_SCALE, blip, 0.90f);
+                                players[i].PedId = ped;
+                                players[i].BlipId = CreateBlipForPlayer(i, ped);
+                                players[i].GamerTagId = CreateGamerTagForPlayer(i, name);
 
-                    blips[p.Key] = blip;
-
-                    Debug.WriteLine($"Creating gamer tag and blip for {name}");
+                                Debug.WriteLine($"Re-created gamer tag and blip for {name}");
+                            }
+                        }
+                    }
+                }
+                else if (players.ContainsKey(i) && players[i].State != State.Disconnected)
+                {
+                    players[i].State = State.Disconnected;
                 }
             }
 
-            foreach (var p in players.Where(p => p.Value == State.Connected).ToArray())
-            {
-                players[p.Key] = State.HasGamerTag;
-            }
-
-            foreach (var p in players.Where(p => p.Value == State.Disconnected).ToArray())
-            {
-                if (gamerTags.ContainsKey(p.Key))
-                {
-                    Function.Call(Hash.REMOVE_MP_GAMER_TAG, p.Value);
-                }
-
-                if (blips.ContainsKey(p.Key))
-                {
-                    Function.Call(Hash.REMOVE_BLIP, blips[p.Key]);
-                }
-
-                Debug.WriteLine($"Creating gamer tag and blip for {p.Key}");
-            }
+            await Task.FromResult(0);
         }
     }
 }

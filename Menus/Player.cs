@@ -36,8 +36,6 @@ namespace client.Menus
                 Function.Call(Hash.SET_ENTITY_INVINCIBLE, pedId, isInvincible);
             }
 
-            StyleMenu();
-
             await Task.FromResult(0);
         }
     }

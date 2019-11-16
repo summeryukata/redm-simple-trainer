@@ -38,8 +38,6 @@ namespace client.Menus
                 }
             }
 
-            StyleMenu();
-
             await Task.FromResult(0);
         }
 

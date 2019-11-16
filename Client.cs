@@ -33,6 +33,7 @@ namespace client
             Tick += Noclip.Tick;
             Tick += Toast.Tick;
             Tick += GamerTag.Tick;
+            //Tick += Commands.DrawTexture;
         }
 
         static bool firstTick = true;

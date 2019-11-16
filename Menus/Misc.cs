@@ -14,6 +14,7 @@ namespace client.Menus
 
         public static async Task Draw()
         {
+            StyleMenu();
             SetMenuTitle("Utils", "miscellaneous things~");
 
             AddBool("Display coords?", ref g_ingameCoords);
@@ -22,8 +23,6 @@ namespace client.Menus
             int balloon = AddMenuEntry("Spawn balloon");
 
             int defaultSpawn = AddMenuEntry("Set default spawn");
-
-            StyleMenu();
 
             if (IsEntryPressed(balloon))
             {

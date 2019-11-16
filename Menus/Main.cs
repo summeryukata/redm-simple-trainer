@@ -76,8 +76,6 @@ namespace client.Menus
                 w = 0;
             }
 
-            StyleMenu();
-
             var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
 
             if (IsEntryPressed(list))

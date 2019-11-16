@@ -49,8 +49,6 @@ namespace client.Menus
                 Toast.AddToast($"Removed all weapons!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
-            StyleMenu();
-
             await Task.FromResult(0);
         }
 

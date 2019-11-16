@@ -52,9 +52,9 @@ namespace client
         public static int g_optionsBlue = 255;
         public static int g_optionsAlpha = 210;
 
-        public static int g_activeRed = 203;
-        public static int g_activeGreen = 16;
-        public static int g_activeBlue = 16;
+        public static int g_activeRed = 255;
+        public static int g_activeGreen = 255;
+        public static int g_activeBlue = 255;
         public static int g_activeOpacity = 125;
 
         public static int g_highlightRed = 230;

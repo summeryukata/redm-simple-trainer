@@ -11,6 +11,16 @@ namespace client
 {
     internal class Drawing : Globals
     { 
+        internal static void CorrectAspectRatio(ref float x, ref float y)
+        {
+            const float height = 1080f;
+            float ratio = 16f / 9f;
+            var width = height * ratio;
+
+            x = x / width * 1000;
+            y = y / height * 1000;
+        }
+
         internal static void DrawText(string text, int font, float x, float y, float scaleX, float scaleY, int r, int g, int b, int a, bool center = false)
         {
             Function.Call(Hash.SET_TEXT_SCALE, scaleX, scaleY);
@@ -43,6 +53,7 @@ namespace client
 
         internal static void SetMenuTitle(string title, string subtitle)
         {
+            StyleMenu();
             DrawText(title, g_titleTextFont, 0.25f / 2, 0.065f, 0.75f, 0.75f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
             DrawText(subtitle, 1, 0.25f / 2, 0.105f, 0.50f, 0.40f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
         }
@@ -308,10 +319,14 @@ namespace client
             //DrawRect(0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0, 0, 0, 200);
             DrawTexture("menu_textures", "translate_bg_1a", 0.25f / 2, 1.0f / 2, 0.25f, 1.0f, 0.0f, 0, 0, 0, 200, true);
 
+            float fromX = width / 2.0f + 0.025f;
+
+            // title box
+            DrawTexture("menu_textures", "translate_bg_1a", fromX, 0.05f + (0.1f / 2), width + 0.02f, 0.1f, 0.0f, 203, 16, 16, 100, true);
+
             string selectedTxd = "boot_flow";
             string selectedTex = "SELECTION_BOX_BG_1D";
 
-            float fromX = width / 2.0f + 0.025f;
 
             if (g_menu_optionCount > maxOptionCount)
             {
@@ -336,7 +351,7 @@ namespace client
             }
             else
             {
-                activeY = DiffTrack(((g_menu_currentOption * 0.035f) + 0.1415f), activeY, 15.0f, Function.Call<float>(Hash.GET_FRAME_TIME, new InputArgument[0]));
+                activeY = DiffTrack(((g_menu_currentOption * 0.035f) + 0.14f), activeY, 15.0f, Function.Call<float>(Hash.GET_FRAME_TIME, new InputArgument[0]));
 
                 //DrawRect(fromX, activeY, width, 0.035f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity);
                 DrawTexture(selectedTxd, selectedTex, fromX, activeY, width, 0.035f, 0.0f, g_activeRed, g_activeGreen, g_activeBlue, g_activeOpacity, true);
@@ -347,13 +362,22 @@ namespace client
         {
             int count;
 
+            float totalWidth = 0.20f;
+
+            float sizeX = 0.030f;
+            float sizeY = sizeX;
+
+            CorrectAspectRatio(ref sizeX, ref sizeY);
+
+            float x = totalWidth + (sizeX / 2);
+            float y = ((g_menu_optionCount + 1) * 0.035f + 0.126f) + sizeY / 2;
+
+            count = AddMenuEntry(option);
+            DrawTexture("generic_textures", "tick_box", x, y, sizeX, sizeY, 0, 255, 255, 255, 255, true);
+
             if (value)
             {
-                count = AddMenuEntry($"{option}: ~b~On");
-            }
-            else
-            {
-                count = AddMenuEntry($"{option}: ~r~Off");
+                DrawTexture("generic_textures", "tick", x, y, sizeX, sizeY, 0, 203, 16, 16, 255, true);
             }
 
             if (g_menu_currentOption == g_menu_optionCount && g_menu_optionPress)

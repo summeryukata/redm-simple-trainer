@@ -80,8 +80,6 @@ namespace client.Menus
                 Toast.AddToast("Cleared modifiers!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
-            StyleMenu();
-
             await Task.FromResult(0);
         }
 
