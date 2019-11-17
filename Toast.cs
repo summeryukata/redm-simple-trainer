@@ -74,8 +74,8 @@ namespace client
                     FadeOut();
                 }
 
-                Drawing.DrawText(Text, 1, m_fadeX - (0.3f / 2) + 0.01f, Y - (height / 2) + 0.002f, 0.1f, 0.4f, 255, 255, 255, m_alpha, false);
-                Drawing.DrawRect(X, Y, 0.3f, height, Globals.g_backgroundRed, Globals.g_backgroundGreen, Globals.g_backgroundBlue, m_alpha);
+                Drawing.DrawText(Text, Drawing.g_optionsFont, m_fadeX - (0.3f / 2) + 0.01f, Y - (height / 2) + 0.002f, 0.1f, 0.4f, 255, 255, 255, m_alpha, false);
+                Drawing.DrawTexture("boot_flow", "selection_box_bg_1d", X, Y, 0.3f, height, 0f, Globals.g_backgroundRed, Globals.g_backgroundGreen, Globals.g_backgroundBlue, m_alpha, true);
             }
         }
 

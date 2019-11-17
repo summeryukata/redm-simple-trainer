@@ -116,7 +116,7 @@ namespace client
 
                 if (ms_shouldDrawHelp) DrawHintMenu();
 
-                Vector3 rotation = Vector3.Multiply(Function.Call<Vector3>(Hash._GET_GAMEPLAY_CAM_ROT, 0), (float)Math.PI / 180.0f);
+                Vector3 rotation = Vector3.Multiply(Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_ROT, 0), (float)Math.PI / 180.0f);
                 Vector3 forward = new Vector3((float)(-Math.Sin(rotation.Z) * Math.Abs(Math.Cos(rotation.X))),
                     (float)(Math.Cos(rotation.Z) * Math.Abs(Math.Cos(rotation.X))),
                     (float)Math.Sin(rotation.X));
@@ -125,7 +125,7 @@ namespace client
                 Vector3 right = new Vector3(forward.Y, -forward.X, 0);
 
                 Vector3 camPos = Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_COORD);
-                Vector3 camRot = Function.Call<Vector3>(Hash._GET_GAMEPLAY_CAM_ROT, 0);
+                Vector3 camRot = Function.Call<Vector3>(Hash.GET_GAMEPLAY_CAM_ROT, 0);
                 Vector3 pedPos = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, ms_mount != -1 ? ms_mount : ms_ped);
                 Vector3 offset = (pedPos - camPos);
 

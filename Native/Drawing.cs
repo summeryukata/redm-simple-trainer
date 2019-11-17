@@ -26,6 +26,7 @@ namespace client
             Function.Call(Hash.SET_TEXT_SCALE, scaleX, scaleY);
             Function.Call((Hash)0x50a41ad966910f03, r, g, b, a);
             Function.Call(Hash.SET_TEXT_CENTRE, center);
+            Function.Call((Hash)0xADA9255D, font);
             // LITERAL_STRING, PLAYER_STRING
             Function.Call(Hash._DRAW_TEXT, Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", text), x, y);
         }
@@ -55,7 +56,7 @@ namespace client
         {
             StyleMenu();
             DrawText(title, g_titleTextFont, 0.25f / 2, 0.065f, 0.75f, 0.75f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
-            DrawText(subtitle, 1, 0.25f / 2, 0.105f, 0.50f, 0.40f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
+            DrawText(subtitle, g_optionsFont, 0.25f / 2, 0.105f, 0.50f, 0.40f, g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha, true);
         }
 
         private static readonly int maxOptionCount = 18;
@@ -246,7 +247,18 @@ namespace client
 
         internal static int AddMenuOption(string option, MenuId submenu)
         {
+            float totalWidth = 0.20f;
+
+            float sizeX = 0.030f;
+            float sizeY = sizeX;
+
+            CorrectAspectRatio(ref sizeX, ref sizeY);
+
+            float x = totalWidth + (sizeX / 2);
+            float y = ((g_menu_optionCount + 1) * 0.035f + 0.126f) + sizeY / 2;
+
             int count = AddMenuEntry(option);
+            DrawTexture("pausemenu_textures", "SELECTION_ARROW_RIGHT", x, y, sizeX, sizeY, 0f, g_optionsRed, g_optionsGreen, g_optionsBlue, g_optionsAlpha, true);
 
             if (g_menu_currentOption == g_menu_optionCount && g_menu_optionPress)
             {

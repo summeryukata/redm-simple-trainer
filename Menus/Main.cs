@@ -49,7 +49,7 @@ namespace client.Menus
 
         public static async Task Draw()
         {
-            SetMenuTitle("hi!", "this is native menu");
+            SetMenuTitle("owo", "what's this?");
 
             int list = AddMenuOption("Player Listing", MenuId.MENU_PLAYERLIST);
 

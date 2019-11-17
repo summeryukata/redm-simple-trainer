@@ -92,6 +92,8 @@ namespace client
                     Keyboard.DisableControlActionWrap(2, Control.VehSelectPrevWeapon, true);
                     Keyboard.DisableControlActionWrap(2, Control.SelectWeaponSpecial, true);
                     Keyboard.DisableControlActionWrap(2, Control.SelectWeaponUnarmed, true);
+
+                    Function.Call(Hash.HIDE_HUD_AND_RADAR_THIS_FRAME);
                 }
 
                 if (!Noclip.Enabled)

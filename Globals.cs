@@ -29,6 +29,9 @@ namespace client
         public static bool g_editFirstOpen = false;
 
         // styling
+        public static int g_titleTextFont = 22;
+        public static int g_optionsFont = 23;
+
         public static float g_titleMenuText = 0.01f + 0.020f;
 
         public static float g_trainerCentre = 0.155f;
@@ -40,13 +43,11 @@ namespace client
         public static int g_titleTextAlpha = 255;
         public static int[] g_menuTextColour = { g_titleTextRed, g_titleTextGreen, g_titleTextBlue, g_titleTextAlpha };
 
-        public static int g_titleTextFont = 7;
         public static int g_backgroundRed = 0;
         public static int g_backgroundGreen = 0;
         public static int g_backgroundBlue = 0;
         public static int g_backgroundAlpha = 200;
 
-        public static int g_optionsFont = 10;
         public static int g_optionsRed = 255;
         public static int g_optionsGreen = 255;
         public static int g_optionsBlue = 255;

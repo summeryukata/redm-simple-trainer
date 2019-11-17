@@ -93,7 +93,7 @@ namespace client
         {
             if (g_infiniteStamina)
             {
-                Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerPedId(), 100.0f);
+                Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerId(), 100.0f);
                 await Task.FromResult(0);
             }
         }
