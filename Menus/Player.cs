@@ -12,7 +12,7 @@ namespace client.Menus
     {
         static bool disableRagdoll = false;
         static bool isInvincible = false;
-        static bool infiniteStamina;
+        static bool infiniteStamina = false;
 
         public static async Task Draw()
         {
@@ -37,6 +37,16 @@ namespace client.Menus
                     Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerId(), 100.0f);
                 }
             }));
+
+            int model = AddMenuEntry("Set default model");
+
+            if (IsEntryPressed(model))
+            {
+                Client.SpawnModel = ChangeModel.lastChosenModel;
+                Storage.Set("SpawnModel", ChangeModel.lastChosenModel);
+
+                Toast.AddToast($"Default model set!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+            }
 
             await Task.FromResult(0);
         }

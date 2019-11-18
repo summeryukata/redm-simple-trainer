@@ -33,18 +33,32 @@ namespace client
         }
 
         public static Vector3 SpawnLocation;
+        public static string SpawnModel;
 
         async Task FirstTick()
         {
             await Delay(500);
-
-            //await ChangeModel.SetModel("a_c_fox_01");
 
             SpawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
 
             if (Storage.TryGet("SpawnLocation", out Vector3 spawnLocation))
             {
                 SpawnLocation = spawnLocation;
+            }
+
+            SpawnModel = "player_zero";
+
+            if (Storage.TryGet("SpawnModel", out string spawnModel))
+            {
+                SpawnModel = spawnModel;
+
+                await Menus.ChangeModel.SetModel(spawnModel, false);
+            }
+
+            if (!Storage.TryGet("NewMenuBindWarning", out int seen))
+            {
+                Toast.AddToast("The default menu binding has changed from M to L.", 25000, 0.18f, 0.05f);
+                Storage.Set("NewMenuBindWarning", 1);
             }
 
             Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);

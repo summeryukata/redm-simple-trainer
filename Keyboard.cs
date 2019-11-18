@@ -20,7 +20,7 @@ namespace client
         public static bool IsControlPressedAny(int group, Control control) => IsControlPressedWrap(group, control) || IsDisabledControlPressedWrap(group, control);
 
         // this used to have proper detection for whether view switch (on controller) was held for x ms but it does no longer
-        private static bool TrainerSwitchPressed() => IsDisabledControlPressedWrap(0, Control.InteractionMenu);
+        private static bool TrainerSwitchPressed() => IsDisabledControlPressedWrap(0, Control.PlayerMenu);
 
         private static Dictionary<Control, int> ms_controlStates = new Dictionary<Control, int>();
 

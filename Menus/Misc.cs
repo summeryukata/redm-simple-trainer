@@ -12,8 +12,8 @@ namespace client.Menus
     {
         public static int balloonEntity = -1;
 
-        static bool ingameCoords;
-        static bool debugControls;
+        static bool ingameCoords = false;
+        static bool debugControls = false;
 
         public static async Task Draw()
         {

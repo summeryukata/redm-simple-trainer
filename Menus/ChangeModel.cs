@@ -10,7 +10,9 @@ namespace client.Menus
 {
     internal class ChangeModel : Drawing
     {
-        public static async Task SetModel(string name)
+        internal static string lastChosenModel = "player_zero";
+
+        public static async Task SetModel(string name, bool message = true)
         {
             int model = GenHash(name);
             int player = Function.Call<int>(Hash.PLAYER_ID);
@@ -20,8 +22,13 @@ namespace client.Menus
             Function.Call(Hash.SET_PLAYER_MODEL, player, model, false);
             Function.Call((Hash)0x283978A15512B2FE, Function.Call<int>(Hash.PLAYER_PED_ID), true);
             Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, model);
-            
-            Toast.AddToast($"Switching to {name}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+
+            lastChosenModel = name;
+
+            if (message)
+            {
+                Toast.AddToast($"Switching to {name}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+            }
         }
 
         public static async Task Draw()
