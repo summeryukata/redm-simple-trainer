@@ -57,6 +57,7 @@ namespace client
             Tick += Noclip.Tick;
             Tick += Toast.Tick;
             Tick += GamerTag.Tick;
+            Tick += Drawing.BoolCallbacks;
             //Tick += Commands.DrawTexture;
         }
 
@@ -69,8 +70,6 @@ namespace client
 
             if (!pauseActive)
             {
-                Keyboard.DisableControlActionWrap(2, Control.Map, true);
-
                 if (Globals.g_menu_subMenu != MenuId.MENU_NOTOPEN)
                 {
                     Keyboard.DisableControlActionWrap(2, Control.VehNextRadioTrack, true);
@@ -107,6 +106,10 @@ namespace client
 
             Globals.g_menu_optionCount = 0;
 
+            bool applyStyle = Globals.g_menu_subMenu != MenuId.MENU_NOTOPEN;
+            
+            if (applyStyle) Drawing.StyleMenu();
+
             switch (Globals.g_menu_subMenu)
             {
                 case MenuId.MENU_MAIN:
@@ -126,7 +129,7 @@ namespace client
                     break;
 
                 case MenuId.MENU_MODIFIERS:
-                    await Menus.Modifiers.Draw();
+                    await Menus.TimecycModifiers.Draw();
                     break;
 
                 case MenuId.MENU_WEAPONS:
@@ -144,6 +147,8 @@ namespace client
                 default:
                     break;
             }
+
+            if (applyStyle) Drawing.StyleSelectedOption();
 
             await Frame.RunFunctions();
 

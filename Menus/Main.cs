@@ -63,7 +63,7 @@ namespace client.Menus
             AddInt("Time", ref g_currentTimeMinutes, 0, 60, 1, additionalValuePre: $"{g_currentTimeHours}:{zero}");
             AddArray("Weather", ref g_currentWeatherIdx, g_weathers, g_weathers.Count());
 
-            int v = AddArray("Vehicles", ref selectedVehicle, vehicles, vehicles.Count());
+            int v = AddArray("Vehicles", ref selectedVehicle, NameArrays.Vehicles, NameArrays.Vehicles.Count());
 
             int w;
 
@@ -102,7 +102,7 @@ namespace client.Menus
                 var forward = Function.Call<Vector3>(Hash.GET_ENTITY_FORWARD_VECTOR, pedId);
                 forward.Normalize();
                 var head = Function.Call<float>(Hash.GET_ENTITY_HEADING, pedId);
-                var veh = vehicles[selectedVehicle];
+                var veh = NameArrays.Vehicles[selectedVehicle];
                 var hash = GenHash(veh);
 
                 await CreateVehicle(hash, coors + (forward * 3), head);
@@ -117,118 +117,5 @@ namespace client.Menus
 
             await Task.FromResult(0);
         }
-
-        // auto-generated
-        static string[] vehicles = new[]
-        {
-            "privateopensleeper02x",
-            "privateopensleeper01x",
-            "steamerDummy",
-            "armoredCar01x",
-            "armoredCar03x",
-            "privatebaggage01x",
-            "smuggler02",
-            "keelboat",
-            "boatSteam02x",
-            "midlandrefrigeratorCar",
-            "midlandboxcar05x",
-            "caboose01x",
-            "canoe",
-            "canoeTreeTrunk",
-            "cart01",
-            "cart02",
-            "cart03",
-            "cart04",
-            "cart05",
-            "cart06",
-            "cart07",
-            "cart08",
-            "coach2",
-            "coach3",
-            "coach3_cutscene",
-            "coach4",
-            "coach5",
-            "coach6",
-            "buggy01",
-            "buggy02",
-            "buggy03",
-            "ArmySupplyWagon",
-            "chuckwagon000x",
-            "supplywagon",
-            "supplywagon2",
-            "logwagon",
-            "logwagon2",
-            "coal_wagon",
-            "chuckwagon002x",
-            "gatling_gun",
-            "gatlingMaxim02",
-            "handcart",
-            "horseBoat",
-            "hotAirBalloon01",
-            "hotchkiss_cannon",
-            "mineCart01x",
-            "northflatcar01x",
-            "privateflatcar01x",
-            "northpassenger01x",
-            "northpassenger03x",
-            "privatepassenger01x",
-            "oilWagon01x",
-            "oilWagon02x",
-            "pirogue",
-            "pirogue2",
-            "policeWagon01x",
-            "policeWagongatling01x",
-            "privateCoalCar01x",
-            "NorthCoalCar01x",
-            "winterSteamer",
-            "wintercoalcar",
-            "privateboxcar04x",
-            "privateboxcar02x",
-            "privateboxcar01x",
-            "coalHopper01x",
-            "privateObservationcar",
-            "privateArmoured",
-            "privateDining01x",
-            "privateRooms01x",
-            "privateSteamer01x",
-            "northSteamer01x",
-            "GhostTrainSteamer",
-            "GhostTrainCoalCar",
-            "GhostTrainPassenger",
-            "GhostTrainCaboose",
-            "rcBoat",
-            "rowboat",
-            "rowboatSwamp",
-            "rowboatSwamp02",
-            "ship_guama02",
-            "turbineboat",
-            "ship_nbdGuama",
-            "ship_nbdGuama2",
-            "skiff",
-            "stagecoach001x",
-            "stagecoach002x",
-            "stagecoach003x",
-            "stagecoach004x",
-            "stagecoach005x",
-            "stagecoach006x",
-            "trolley01x",
-            "TugBoat2",
-            "wagon02x",
-            "wagon03x",
-            "wagon04x",
-            "wagon05x",
-            "wagon06x",
-            "wagonCircus01x",
-            "wagonCircus02x",
-            "wagonDoc01x",
-            "wagonPrison01x",
-            "wagonWork01x",
-            "wagonDairy01x",
-            "wagonTraveller01x",
-            "breach_cannon",
-            "utilliwag",
-            "gatchuck",
-            "gatchuck_2",
-        };
     }
 }

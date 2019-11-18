@@ -25,17 +25,14 @@ namespace client
             return (int)(num + (num << 15));
         }
 
-        public static bool g_browseJustOpen = false;
-        public static bool g_editFirstOpen = false;
-
         // styling
+        public static float g_menuTextWidth = 0.20f;
+        public static float g_menuTextLeft = g_menuTextWidth / 2.0f + 0.025f;
+
         public static int g_titleTextFont = 22;
         public static int g_optionsFont = 23;
 
         public static float g_titleMenuText = 0.01f + 0.020f;
-
-        public static float g_trainerCentre = 0.155f;
-        public static bool g_titleCentered = false;
 
         public static int g_titleTextRed = 255;
         public static int g_titleTextGreen = 255;
@@ -83,30 +80,16 @@ namespace client
         public static bool right_press = false;
         public static bool left_press = false;
 
-        // frame functions
-        public static bool g_noReload = false;
-
-        public static bool g_rainbowFlares = false;
-        public static bool g_playerVehicleLocked = false;
-        public static bool g_ingameCoords = false;
-        public static bool g_driftAngle = false;
         public static int g_currentTimeHours = 12;
         public static int g_currentTimeMinutes = 0;
-        public static bool g_persistWeather = false;
-        public static int g_vehicleType;
-        public static int g_colourType = 0;
 
         public static int previousCurrentTime = 0;
         public static bool previousPersistWeather = false;
-        public static bool previousVehicleLocked = false;
 
         public static int g_currentWeatherIdx = 0;
         public static int previousWeatherIdx = 0;
         public static string[] g_weathers = new[] { "OVERCAST", "RAIN", "FOG", "SNOWLIGHT", "THUNDER", "BLIZZARD", "SNOW", "MISTY", 
                                                     "SUNNY", "HIGHPRESSURE", "SLEET", "DRIZZLE", "SNOWCLEARING", "OVERCASTDARK", 
                                                     "THUNDERSTORM", "SANDSTORM", "HURRICANE", "HAIL", "WHITEOUT", "GROUNDBLIZZARD"};
-
-        public static bool g_debugControls = false;
-        public static bool g_infiniteStamina = false;
     }
 }

@@ -22,7 +22,6 @@ namespace client.Menus
 
             int pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
             int targetPed = Function.Call<int>(Hash.GET_PLAYER_PED, SelectedPlayer);
-            Vector3 playerPos = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, pedId, 0);
             Vector3 targetPos = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, targetPed, 0);
             int targetVeh = Function.Call<int>(Hash.GET_VEHICLE_PED_IS_USING, targetPed);
 

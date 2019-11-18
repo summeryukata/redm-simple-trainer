@@ -59,45 +59,6 @@ namespace client
             await Task.FromResult(0);
         }
 
-        private static async Task IngameCoords()
-        {
-            if (g_ingameCoords)
-            {
-                Vector3 coords = Function.Call<Vector3>(Hash.GET_ENTITY_COORDS, Function.Call<int>(Hash.PLAYER_PED_ID), false);
-                Drawing.DrawText($"{coords.ToString()}", g_optionsFont, 0.4f, 0.98f, 0.30f, 0.30f, 255, 255, 255, 255);
-            }
-
-            await Task.FromResult(0);
-        }
-
-        private static async Task DebugControls()
-        {
-            if (g_debugControls)
-            {
-                float controlY = 0.01f;
-
-                foreach (Control ctrl in Enum.GetValues(typeof(Control)))
-                { 
-                    if (Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, (uint)ctrl))
-                    {
-                        Drawing.DrawText(ctrl.ToString(), Globals.g_optionsFont, 0.8f, controlY, 0.25f, 0.25f, 255, 255, 255, 255);
-                        controlY += 0.02f;
-                    }
-                }
-
-                await Task.FromResult(0);
-            }
-        }
-
-        internal static async Task InfiniteStamina()
-        {
-            if (g_infiniteStamina)
-            {
-                Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerId(), 100.0f);
-                await Task.FromResult(0);
-            }
-        }
-
         internal static async Task ResurrectIfDead()
         {
             int ped = API.PlayerPedId();
@@ -161,10 +122,7 @@ namespace client
         internal static async Task RunFunctions()
         {
             await CurrentTime();
-            await IngameCoords();
             await CurrentWeather();
-            await DebugControls();
-            await InfiniteStamina();
             await ResurrectIfDead();
             await BalloonHandling();
         }

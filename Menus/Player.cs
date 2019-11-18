@@ -12,29 +12,31 @@ namespace client.Menus
     {
         static bool disableRagdoll = false;
         static bool isInvincible = false;
+        static bool infiniteStamina;
 
         public static async Task Draw()
         {
             SetMenuTitle("Player", "play with yourself!");
 
             AddMenuOption("Change model", MenuId.MENU_CHANGE_MODEL);
-            var r = AddBool("Disable ragdoll?", ref disableRagdoll);
-            var i = AddBool("Invincible?", ref isInvincible);
-            var s = AddBool("Infinite stamina?", ref g_infiniteStamina);
 
-            var pedId = Function.Call<int>(Hash.PLAYER_PED_ID);
-
-            if (IsEntryPressed(r))
+            AddBool("Disable ragdoll", ref disableRagdoll, cb: new Action<bool>((val) =>
             {
-                Debug.WriteLine($"SET_PED_CAN_RAGDOLL to {!disableRagdoll} for me ({pedId})");
-                Function.Call(Hash.SET_PED_CAN_RAGDOLL, pedId, !disableRagdoll);
-            }
+                Function.Call(Hash.SET_PED_CAN_RAGDOLL, API.PlayerPedId(), !disableRagdoll);
+            }));
 
-            if (IsEntryPressed(i))
+            AddBool("Invincible", ref isInvincible, cb: new Action<bool>((val) =>
             {
-                Debug.WriteLine($"SET_ENTITY_INVINCIBLE to {isInvincible} for me ({pedId})");
-                Function.Call(Hash.SET_ENTITY_INVINCIBLE, pedId, isInvincible);
-            }
+                Function.Call(Hash.SET_ENTITY_INVINCIBLE, API.PlayerPedId(), isInvincible);
+            }));
+
+            AddBool("Infinite stamina", ref infiniteStamina, cb: new Action<bool>((val) =>
+            {
+                if (val)
+                {
+                    Function.Call(Hash.RESTORE_PLAYER_STAMINA, API.PlayerId(), 100.0f);
+                }
+            }));
 
             await Task.FromResult(0);
         }

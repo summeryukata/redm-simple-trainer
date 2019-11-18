@@ -17,50 +17,31 @@ namespace client
         public static bool IsDisabledControlJustPressedWrap(int group, Control ctrl) => Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, (uint)ctrl);
         public static void DisableControlActionWrap(int group, Control control, bool val) => Function.Call(Hash.DISABLE_CONTROL_ACTION, group, (uint)control, val);
 
-        private static bool trainerSwitchPressed()
-        {
-            bool isPressed = false;
+        public static bool IsControlPressedAny(int group, Control control) => IsControlPressedWrap(group, control) || IsDisabledControlPressedWrap(group, control);
 
-            if (IsDisabledControlPressedWrap(0, Control.Map))
-            {
-                if (!isPressed)
-                {
-                    isPressed = true;
-
-                    return true;
-                }
-            }
-            else
-            {
-                isPressed = false;
-            }
-
-            return false;
-        }
+        // this used to have proper detection for whether view switch (on controller) was held for x ms but it does no longer
+        private static bool TrainerSwitchPressed() => IsDisabledControlPressedWrap(0, Control.InteractionMenu);
 
         private static Dictionary<Control, int> ms_controlStates = new Dictionary<Control, int>();
 
         private static int GetTickCount() => Function.Call<int>(Hash.GET_GAME_TIMER);
 
         internal static bool IsControlPressedFor(Control ctrl, int msec)
-        {
-            bool ctrlPressed(Control action) =>
-                IsControlPressedWrap(0, action) || IsDisabledControlPressedWrap(0, action);
-            
+        {            
             // make a new entry if none exists
             if (!ms_controlStates.ContainsKey(ctrl))
             {
                 ms_controlStates[ctrl] = -1;
             }
 
-            if (!ctrlPressed(ctrl))
+            if (!IsControlPressedAny(2, ctrl))
             {
                 ms_controlStates[ctrl] = -1;
 
                 return false;
             }
 
-            if (ms_controlStates[ctrl] == -1 && ctrlPressed(ctrl))
+            if (ms_controlStates[ctrl] == -1 && IsControlPressedAny(2, ctrl))
             {
                 ms_controlStates[ctrl] = GetTickCount();
             }
@@ -125,7 +106,7 @@ namespace client
             {
                 if (g_menu_subMenu == MenuId.MENU_NOTOPEN)
                 {
-                    if (trainerSwitchPressed() || IsDisabledControlPressedWrap(0, Control.ScriptLb) && IsDisabledControlPressedWrap(0, Control.ScriptPadDown) && g_menu_subMenu == 0)
+                    if (TrainerSwitchPressed() || IsDisabledControlPressedWrap(0, Control.ScriptLb) && IsDisabledControlPressedWrap(0, Control.ScriptPadDown) && g_menu_subMenu == 0)
                     {
                         g_menu_delayCounter = GetTickCount();
                         g_menu_subMenu = MenuId.MENU_MAIN;
