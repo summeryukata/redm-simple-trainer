@@ -14,7 +14,6 @@ namespace client.Menus
 
         public static async Task Draw()
         {
-            StyleMenu();
             SetMenuTitle("Utils", "miscellaneous things~");
 
             AddBool("Display coords?", ref g_ingameCoords);
