@@ -17,21 +17,7 @@ namespace client
         internal static Type vector3Type = typeof(Vector3);
         internal static Type quatType = typeof(Quaternion);
 
-        public static bool Has<T>(string key)
-        {
-            try
-            {
-                Get<T>(key);
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static T Get<T>(string key)
+        private static T GetInternal<T>(string key)
         {
             Type genericType = typeof(T);
 
@@ -87,29 +73,47 @@ namespace client
             }
         }
 
+        public static bool TryGet<T>(string key, out T outVal)
+        {
+            if (GetInternal<int>($"IsSet_{key}") != 0)
+            {
+                outVal = GetInternal<T>(key);
+
+                return true;
+            }
+
+            outVal = default;
+            return false;
+        }
+
         public static void Set(string key, int value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvpInt(key, value);
         }
 
         public static void Set(string key, float value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvpFloat(key, value);
         }
 
         public static void Set(string key, string value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvp(key, value);
         }
 
         public static void Set(string key, Vector2 value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvpFloat($"Vec2_{key}_X", value.X);
             API.SetResourceKvpFloat($"Vec2_{key}_Y", value.Y);
         }
 
         public static void Set(string key, Vector3 value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvpFloat($"Vec3_{key}_X", value.X);
             API.SetResourceKvpFloat($"Vec3_{key}_Y", value.Y);
             API.SetResourceKvpFloat($"Vec3_{key}_Z", value.Z);
@@ -117,6 +121,7 @@ namespace client
 
         public static void Set(string key, Quaternion value)
         {
+            API.SetResourceKvpInt($"IsSet_{key}", 1);
             API.SetResourceKvpFloat($"Quat_{key}_X", value.X);
             API.SetResourceKvpFloat($"Quat_{key}_Y", value.Y);
             API.SetResourceKvpFloat($"Quat_{key}_Z", value.Z);
@@ -144,9 +149,9 @@ namespace client
 
                     if (key != null)
                     {
-                        if (Has<T>(key))
+                        if (TryGet<T>(key, out T outVal))
                         {
-                            results.Add(Get<T>(key));
+                            results.Add(outVal);
                         }
                     }
                 } while (key != null);
