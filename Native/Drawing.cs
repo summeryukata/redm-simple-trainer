@@ -356,6 +356,7 @@ namespace client
 
                     DrawRect(fromX, 0.156f, width, 0.005f, g_indicatorRed, g_indicatorGreen, g_indicatorBlue, g_indicatorAlpha);
                 }
+
                 if (g_menu_currentOption != g_menu_optionCount)
                 {
                     DrawRect(fromX, 0.79f, width, 0.005f, g_indicatorRed, g_indicatorGreen, g_indicatorBlue, g_indicatorAlpha);

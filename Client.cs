@@ -29,40 +29,39 @@ namespace client
     {
         public Client()
         {
-            Tick += DoTick;
+            Tick += FirstTick;
+        }
+
+        public static Vector3 SpawnLocation;
+
+        async Task FirstTick()
+        {
+            await Delay(500);
+
+            //await ChangeModel.SetModel("a_c_fox_01");
+
+            SpawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
+
+            if (Storage.TryGet("SpawnLocation", out Vector3 spawnLocation))
+            {
+                SpawnLocation = spawnLocation;
+            }
+
+            Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
+            Function.Call(Hash._SET_MINIMAP_REVEALED, true);
+            Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
+
+            Tick -= FirstTick;
+
+            Tick += BaseTick;
             Tick += Noclip.Tick;
             Tick += Toast.Tick;
             Tick += GamerTag.Tick;
             //Tick += Commands.DrawTexture;
         }
 
-        static bool firstTick = true;
-
-        public static Vector3 SpawnLocation;
-
-        private static async Task DoTick()
+        private static async Task BaseTick()
         {
-            if (firstTick)
-            {
-                await Delay(500);
-
-                //await ChangeModel.SetModel("a_c_fox_01");
-
-                SpawnLocation = Storage.Get<Vector3>("SpawnLocation");
-
-                if (Vector3.Distance(SpawnLocation, new Vector3(0f, 0f, 0f)) < 10.0f)
-                {
-                    SpawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
-                    Storage.Set("SpawnLocation", SpawnLocation);
-                }
-
-                Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
-                Function.Call(Hash._SET_MINIMAP_REVEALED, true);
-                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
-
-                firstTick = false;
-            }
-
             Function.Call((Hash)0x4759cc730f947c81); // ped pop enable  
             Function.Call((Hash)0x1ff00db43026b12f); // veh?
 
