@@ -27,7 +27,7 @@ namespace client.Menus
 
             if (message)
             {
-                Toast.AddToast($"Switching to {name}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast($"Switching to {name}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
         }
 

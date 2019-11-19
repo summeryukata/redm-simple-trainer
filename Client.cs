@@ -57,7 +57,7 @@ namespace client
 
             if (!Storage.TryGet("NewMenuBindWarning", out int seen))
             {
-                Toast.AddToast("The default menu binding has changed from M to L.", 25000, 0.18f, 0.05f);
+                Scripts.Toast.AddToast("The default menu binding has changed from M to L.", 25000, 0.18f, 0.05f);
                 Storage.Set("NewMenuBindWarning", 1);
             }
 
@@ -68,9 +68,9 @@ namespace client
             Tick -= FirstTick;
 
             Tick += BaseTick;
-            Tick += Noclip.Tick;
-            Tick += Toast.Tick;
-            Tick += GamerTag.Tick;
+            Tick += Scripts.Noclip.Tick;
+            Tick += Scripts.Toast.Tick;
+            Tick += Scripts.GamerTag.Tick;
             Tick += Drawing.BoolCallbacks;
             //Tick += Commands.DrawTexture;
         }
@@ -108,14 +108,14 @@ namespace client
                     Function.Call(Hash.HIDE_HUD_AND_RADAR_THIS_FRAME);
                 }
 
-                if (!Noclip.Enabled)
+                if (!Scripts.Noclip.Enabled)
                 {
                     Keyboard.MonitorKeys();
                 }
             }
             else
             {
-                Noclip.Enabled = false;
+                Scripts.Noclip.Enabled = false;
             }
 
             Globals.g_menu_optionCount = 0;

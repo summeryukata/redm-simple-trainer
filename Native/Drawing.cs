@@ -417,7 +417,7 @@ namespace client
             {
                 value = !value;
 
-                if (msg) Toast.AddToast($"{option} is now {value}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                if (msg) Scripts.Toast.AddToast($"{option} is now {value}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             return count;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace client
+namespace client.Scripts
 {
     public static class Toast
     {

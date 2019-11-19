@@ -107,7 +107,7 @@ namespace client.Menus
 
                 await CreateVehicle(hash, coors + (forward * 3), head);
 
-                Toast.AddToast($"Spawned a {veh}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast($"Spawned a {veh}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             if (IsEntryPressed(w))

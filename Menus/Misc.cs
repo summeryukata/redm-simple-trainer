@@ -56,7 +56,7 @@ namespace client.Menus
 
                 Client.SpawnLocation = vec;
 
-                Toast.AddToast("Spawn location set!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast("Spawn location set!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             await Task.FromResult(0);

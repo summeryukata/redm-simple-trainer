@@ -78,7 +78,7 @@ namespace client.Menus
 
                 Function.Call(Hash.CLEAR_TIMECYCLE_MODIFIER);
 
-                Toast.AddToast("Cleared modifiers!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast("Cleared modifiers!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             await Task.FromResult(0);

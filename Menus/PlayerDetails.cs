@@ -36,7 +36,7 @@ namespace client.Menus
                     Function.Call(Hash.SET_ENTITY_COORDS, pedId, targetPos.X, targetPos.Y, targetPos.Z, 1, 0, 0, 1);
                 }
 
-                Toast.AddToast($"Teleported to {SelectedPlayerName}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast($"Teleported to {SelectedPlayerName}!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             if (IsEntryPressed(tpToVeh))
@@ -69,7 +69,7 @@ namespace client.Menus
                     }
                 }
 
-                Toast.AddToast($"Teleported to {SelectedPlayerName}'s vehicle!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast($"Teleported to {SelectedPlayerName}'s vehicle!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             await Task.FromResult(0);

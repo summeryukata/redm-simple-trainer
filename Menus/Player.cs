@@ -14,6 +14,8 @@ namespace client.Menus
         static bool isInvincible = false;
         static bool infiniteStamina = false;
 
+        static float pedScale = 1.0f;
+
         public static async Task Draw()
         {
             SetMenuTitle("Player", "play with yourself!");
@@ -38,6 +40,19 @@ namespace client.Menus
                 }
             }));
 
+            AddFloat("Ped Scale", ref pedScale, 0.1f, 115.0f, 0.2f);
+            int resetScale = AddMenuEntry("Reset ped scale");
+
+            int ped = API.PlayerPedId();
+
+            Function.Call(Hash._SET_PED_SCALE, ped, pedScale);
+
+            if (IsEntryPressed(resetScale))
+            {
+                pedScale = 1.0f;
+                Function.Call((Hash)0x283978A15512B2FE, ped, "REAR");
+            }
+
             int model = AddMenuEntry("Set default model");
 
             if (IsEntryPressed(model))
@@ -45,7 +60,7 @@ namespace client.Menus
                 Client.SpawnModel = ChangeModel.lastChosenModel;
                 Storage.Set("SpawnModel", ChangeModel.lastChosenModel);
 
-                Toast.AddToast($"Default model set!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+                Scripts.Toast.AddToast($"Default model set!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             await Task.FromResult(0);
