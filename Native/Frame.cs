@@ -59,17 +59,6 @@ namespace client
             await Task.FromResult(0);
         }
 
-        internal static async Task ResurrectIfDead()
-        {
-            int ped = API.PlayerPedId();
-            if (Function.Call<bool>(Hash.IS_ENTITY_DEAD, ped))
-            {
-                Scripts.Toast.AddToast("You seem to have died. Resurrecting", 5000, 0.18f, 0.05f);
-                Function.Call(Hash.NETWORK_RESURRECT_LOCAL_PLAYER, Client.SpawnLocation.X, Client.SpawnLocation.Y, Client.SpawnLocation.Z, 0, 0, 0, 0);
-            }
-            await Task.FromResult(0);
-        }
-
         internal static async Task BalloonHandling()
         {
             if (Menus.Misc.balloonEntity != -1 && Function.Call<bool>(Hash.DOES_ENTITY_EXIST, Menus.Misc.balloonEntity) && Function.Call<bool>(Hash.IS_PED_IN_ANY_VEHICLE, API.PlayerPedId(), false))
@@ -123,7 +112,6 @@ namespace client
         {
             await CurrentTime();
             await CurrentWeather();
-            await ResurrectIfDead();
             await BalloonHandling();
         }
     }

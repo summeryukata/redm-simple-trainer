@@ -71,6 +71,7 @@ namespace client
             Tick += Scripts.Noclip.Tick;
             Tick += Scripts.Toast.Tick;
             Tick += Scripts.GamerTag.Tick;
+            Tick += Scripts.DeathScreen.Tick;
             Tick += Drawing.BoolCallbacks;
             //Tick += Commands.DrawTexture;
         }
