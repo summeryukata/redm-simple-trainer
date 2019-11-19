@@ -92,8 +92,6 @@ namespace client.Scripts
                 }
             }
 
-            Drawing.DrawText($"{fgAlpha} fgAlpha, {bgAlpha} bgAlpha", 23, 0.1f, 0.1f, 0.4f, 0.4f, 255, 255, 255, 255, true);
-
             await Task.FromResult(0);
         }
     }
