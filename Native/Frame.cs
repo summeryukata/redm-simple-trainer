@@ -15,19 +15,29 @@ namespace client
             // set current time whenever a change is detected
             if (g_currentTimeMinutes != previousCurrentTime)
             {
-                if (g_currentTimeMinutes == 60)
+                if (g_currentTimeMinutes >= 59)
                 {
-                    g_currentTimeMinutes = 0;
-
                     g_currentTimeHours++;
-
-                    if (g_currentTimeHours > 23)
-                    {
-                        g_currentTimeHours = 0;
-                    }
+                    g_currentTimeMinutes = 0;
+                    Debug.WriteLine($"set hours to {g_currentTimeHours}");
+                }
+                else if (g_currentTimeMinutes <= 0)
+                {
+                    g_currentTimeHours--;
+                    g_currentTimeMinutes = 59;
+                    Debug.WriteLine($"set hours to {g_currentTimeHours}");
                 }
 
-                
+                if (g_currentTimeHours > 23)
+                {
+                    g_currentTimeHours = 0;
+                }
+
+                if (g_currentTimeHours < 0)
+                {
+                    g_currentTimeHours = 23;
+                }
+
                 Function.Call((Hash)0x669E223E64B1903C, g_currentTimeHours, g_currentTimeMinutes, 0, 0, 0);
 
                 previousCurrentTime = g_currentTimeMinutes;
