@@ -118,11 +118,29 @@ namespace client
             await Task.FromResult(0);
         }
 
+        private static async Task InfiniteAmmoHandling()
+        {
+            if (g_currentInfiniteAmmo != previousInfiniteAmmo)
+            {
+                int ped = API.PlayerPedId();
+
+                foreach (var weapName in NameArrays.WeaponNames)
+                {
+                    API.SetPedInfiniteAmmo(ped, g_currentInfiniteAmmo, (uint)GenHash(weapName));
+                }
+
+                previousInfiniteAmmo = g_currentInfiniteAmmo;
+            }
+
+            await Task.FromResult(0);
+        }
+
         internal static async Task RunFunctions()
         {
             await CurrentTime();
             await CurrentWeather();
             await BalloonHandling();
+            await InfiniteAmmoHandling();
         }
     }
 }

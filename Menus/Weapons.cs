@@ -24,9 +24,11 @@ namespace client.Menus
 
             int weap = AddArray("Weapon", ref selectedWeapIdx, NameArrays.WeaponNames, NameArrays.WeaponNames.Count());
             int ammo = AddArray("Ammo Type", ref selectedAmmoType, NameArrays.AmmoTypes, NameArrays.AmmoTypes.Count());
+            int allAmmo = AddMenuEntry("Give All Ammo Types");
             int remove = AddMenuEntry("Remove Weapons");
+            AddBool("Infinite Ammo", ref g_currentInfiniteAmmo);
 
-            int ped = Function.Call<int>(Hash.PLAYER_PED_ID);
+            int ped = API.PlayerPedId();
 
             if (IsEntryPressed(weap))
             {
@@ -47,6 +49,16 @@ namespace client.Menus
             {
                 Function.Call(Hash.REMOVE_ALL_PED_WEAPONS, ped, 1, 1);
                 Scripts.Toast.AddToast($"Removed all weapons!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
+            }
+
+            if (IsEntryPressed(allAmmo))
+            {
+                foreach (var ammoType in NameArrays.AmmoTypes)
+                {
+                    GiveAmmoOfTypeToPed(ped, ammoType, 999);
+                }
+
+                Scripts.Toast.AddToast("Gave all ammo types!", 3000, 0.25f + (0.3f / 2), GetCurrentActiveY());
             }
 
             await Task.FromResult(0);
