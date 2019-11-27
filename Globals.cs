@@ -88,8 +88,11 @@ namespace client
 
         public static int g_currentWeatherIdx = 0;
         public static int previousWeatherIdx = 0;
-        public static string[] g_weathers = new[] { "OVERCAST", "RAIN", "FOG", "SNOWLIGHT", "THUNDER", "BLIZZARD", "SNOW", "MISTY", 
-                                                    "SUNNY", "HIGHPRESSURE", "SLEET", "DRIZZLE", "SNOWCLEARING", "OVERCASTDARK", 
+        public static string[] g_weathers = new[] { "OVERCAST", "RAIN", "FOG", "SNOWLIGHT", "THUNDER", "BLIZZARD", "SNOW", "MISTY",
+                                                    "SUNNY", "HIGHPRESSURE", "SLEET", "DRIZZLE", "SNOWCLEARING", "OVERCASTDARK",
                                                     "THUNDERSTORM", "SANDSTORM", "HURRICANE", "HAIL", "WHITEOUT", "GROUNDBLIZZARD"};
+
+        public static bool g_currentInfiniteAmmo = false;
+        public static bool previousInfiniteAmmo = false;
     }
 }
