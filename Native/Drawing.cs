@@ -28,7 +28,7 @@ namespace client
             Function.Call(Hash.SET_TEXT_CENTRE, center);
             Function.Call((Hash)0xADA9255D, font);
             // LITERAL_STRING, PLAYER_STRING
-            Function.Call(Hash._DRAW_TEXT, Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", text), x, y);
+            Function.Call(Hash._DISPLAY_TEXT, Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", text), x, y);
         }
 
         internal static void ChangeSubmenu(MenuId submenu)
