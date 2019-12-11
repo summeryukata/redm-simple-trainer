@@ -40,10 +40,12 @@ namespace client
             await Delay(500);
 
             SpawnLocation = new Vector3(-262.849f, 793.404f, 118.587f);
+            bool spawnOverriden = false;
 
             if (Storage.TryGet("SpawnLocation", out Vector3 spawnLocation))
             {
                 SpawnLocation = spawnLocation;
+                spawnOverriden = true;
             }
 
             SpawnModel = "player_zero";
@@ -63,7 +65,11 @@ namespace client
 
             Function.Call(Hash.NETWORK_SET_FRIENDLY_FIRE_OPTION, true);
             Function.Call(Hash.SET_MINIMAP_HIDE_FOW, true);
-            Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
+
+            if (spawnOverriden)
+            {
+                Function.Call(Hash.SET_ENTITY_COORDS, PlayerPedId(), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z, 1, 0, 0, 1);
+            }
 
             Tick -= FirstTick;
 
